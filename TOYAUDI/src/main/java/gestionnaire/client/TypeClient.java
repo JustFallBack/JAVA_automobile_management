@@ -1,4 +1,4 @@
-package main.java.gestionnaire.enums;
+package main.java.gestionnaire.client;
 
 // Structure permettant de définir les types de clients
 public enum TypeClient {
