@@ -2,7 +2,7 @@ package test;
 
 import customer.Customers;
 
-public class TestPrivateCustomers {
+public class TestPrivateCustomer {
     public static void main(String[] args) {
         Customers customers = Customers.getInstance();
 

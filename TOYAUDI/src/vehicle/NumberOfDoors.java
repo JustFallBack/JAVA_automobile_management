@@ -2,10 +2,10 @@ package vehicle;
 
 public enum NumberOfDoors {
 
-    COUPE(2, "small and sporty"),
-    HATCHBACK(3, "compact and practical"),
-    SEDAN(4, "family car"),
-    SUV(5, "large with high ground clearance"),;
+    TWO_DOORS(2, "small and sporty"),
+    THREE_DOORS(3, "compact and practical"),
+    FOUR_DOORS(4, "family car"),
+    FIVE_DOORS(5, "large with high ground clearance");
 
     private final int nbDoors;
     private final String description;

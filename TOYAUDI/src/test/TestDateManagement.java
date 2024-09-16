@@ -3,7 +3,7 @@ package test;
 import exceptions.AutomobileManagementCustomerException;
 import management.DateManagement;
 
-abstract public class TestManagementDate {
+abstract public class TestDateManagement {
 
 
    public static void main(String[] args) {
