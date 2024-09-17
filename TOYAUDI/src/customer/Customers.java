@@ -21,15 +21,15 @@ public class Customers extends ArrayList<Customers> {
     }
 
     public void displayCustomers() {
-        for (Customers customers : this) {
-            System.out.println(customers);
+        for (Customers customer : this) {
+            System.out.println(customer);
         }
     }
 
     // Search in the ArrayList of customers if the customerObject passed as an argument exists.
-    public boolean existsCustomers(Customers customersObject) {
-        for (Customers customers : this) {
-            if (customers.equals(customersObject)) {
+    public boolean existsCustomer(Customers customerObject) {
+        for (Customers customer : this) {
+            if (customer.equals(customerObject)) {
                 return true;
             }
         }
@@ -39,7 +39,7 @@ public class Customers extends ArrayList<Customers> {
     public void addPrivateCustomer(String name, String firstName, String address, int age, String date, int nbRentals) {
         try {
             PrivateCustomer customer = new PrivateCustomer(name, firstName, address, age, date, nbRentals);
-            if(!existsCustomers(customer)) {
+            if(!existsCustomer(customer)) {
                 this.add(customer);
             }
             else {
@@ -53,7 +53,7 @@ public class Customers extends ArrayList<Customers> {
     public void addProfessionalCustomer(String name, String date, double discountRate) {
         try {
             ProfessionalCustomer customer = new ProfessionalCustomer(name, date, discountRate);
-            if (!existsCustomers(customer)) {
+            if (!existsCustomer(customer)) {
                 this.add(customer);
             }
             else {

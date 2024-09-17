@@ -1,5 +1,7 @@
 package vehicle;
 
+import exceptions.AutomobileManagementVehicleException;
+
 public enum NumberOfDoors {
 
     TWO_DOORS(2, "small and sporty"),
@@ -21,6 +23,15 @@ public enum NumberOfDoors {
 
     public String getDescription() {
         return description;
+    }
+
+    public static NumberOfDoors getTypeFromNbDoors(int numberOfDoors) throws AutomobileManagementVehicleException {
+        for (NumberOfDoors type : NumberOfDoors.values()) {
+            if (type.getNumberOfDoors() == numberOfDoors) {
+                return type;
+            }
+        }
+        throw new AutomobileManagementVehicleException("No vehicle with this number of doors" + numberOfDoors);
     }
 
 }

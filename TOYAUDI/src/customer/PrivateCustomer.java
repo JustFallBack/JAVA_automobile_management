@@ -12,7 +12,7 @@ public class PrivateCustomer extends Customers {
     private String firstName;
     private String address;
     private int age;
-    private CustomerType type;
+    private final CustomerType type;
     private DateManagement date;
     private int nbRentals;
 
@@ -80,15 +80,10 @@ public class PrivateCustomer extends Customers {
 
     @Override
     public boolean equals(Object obj) {
-        // Comparing memory addresses
         if (this == obj) {
             return true;
         }
-        // If the comparison object is null, return false
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
+        if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
         // Casting obj to PrivateCustomer to compare all attributes
