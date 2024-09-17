@@ -2,6 +2,9 @@ package vehicle;
 
 import exceptions.AutomobileManagementVehicleException;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /*
  * Propose three classes corresponding to each type of vehicle 
  * (Sedan, Break, and Utility) containing the fields: the type of vehicle,
@@ -45,12 +48,12 @@ public class BreakVehicle extends Vehicles {
         this.type = TypeVehicle.BREAK;
         this.manufacturer = manufacturer;
         this.model = model;
-        this.mileage = mileage;
-        this.purchasingPrice = purchasingPrice;
+        this.mileage = new BigDecimal(mileage).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        this.purchasingPrice = new BigDecimal(purchasingPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
-    public RegistrationNumber getId() {
-        return id;
+    public String getId() {
+        return id.getID();
     }
     public NumberOfDoors getNumberOfDoors() {
         return nbDoors;
@@ -74,7 +77,7 @@ public class BreakVehicle extends Vehicles {
     @Override
     public String toString() {
         return "Vehicle type : " + this.getType() +
-                "\nRegistration number : " + this.getId().getID() +
+                "\nRegistration number : " + this.getId() +
                 "\nNumber of doors : " + this.getNumberOfDoors().getNumberOfDoors() +
                 "\nManufacturer : " + this.getManufacturer() +
                 "\nModel : " + this.getModel() +
@@ -87,10 +90,10 @@ public class BreakVehicle extends Vehicles {
         if (this == obj) {
             return true;
         }
-        else {
-            BreakVehicle mock = (BreakVehicle) obj;
-            return id != null && this.id.equals(mock.id);
+        if (obj == null) {
+            return false;
         }
+        BreakVehicle otherVehicle = (BreakVehicle) obj;
+        return id != null && this.id.getID().equals(otherVehicle.id.getID());
     }
-
 }
