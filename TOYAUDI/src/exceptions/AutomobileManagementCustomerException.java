@@ -3,7 +3,7 @@ package exceptions;
 import customer.Customers;
 
 /**
- * Exception that will be thrown if an attempt is made to add the same client twice in the Customers class (same name, etc.).
+ * Exception that will be thrown if an attempt is made to add a client with incorrect attribute.
  */
 public class AutomobileManagementCustomerException extends AutomobileManagementException {
     public AutomobileManagementCustomerException(String s) {

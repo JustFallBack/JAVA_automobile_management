@@ -1,18 +1,14 @@
 package customer;
 import exceptions.AutomobileManagementPrivateCustomerException;
+import exceptions.AutomobileManagementCustomerException;
 import exceptions.AutomobileManagementDateException;
 import management.DateManagement;
 
 /**
  * Class to define a private customer.
- * @extends Customers
+ * @extends SpecificCustomer
  */
-public class PrivateCustomer extends Customers {
-    /**
-     * The name of the private customer.
-     * Must be between 2 and 20 characters long.
-     */
-    private String name;
+public class PrivateCustomer extends SpecificCustomer {
     /**
      * The first name of the private customer.
      * Must be between 2 and 20 characters long.
@@ -59,16 +55,22 @@ public class PrivateCustomer extends Customers {
                              int age, 
                              String date, 
                              int nbRentals
-                             ) throws AutomobileManagementPrivateCustomerException {
-
+                             ) throws AutomobileManagementCustomerException {
+        super(name);
         if (age < 18 || age > 81) {
             throw new AutomobileManagementPrivateCustomerException("The client age must be between 18 and 81 years old : " + age);
         }
-        if (name.length() < 2 || name.length() > 20 || firstName.length() < 2 || firstName.length() > 20) {
-            throw new AutomobileManagementPrivateCustomerException("The client name and first name must be between 2 and 20 characters long : " + name + " " + firstName);
+        if (firstName == null) {
+            throw new AutomobileManagementPrivateCustomerException("The client first name can not be null.");
         }
-        if (address.length() < 5 || address.length() > 100) {
-            throw new AutomobileManagementPrivateCustomerException("The address must be between 5 and 100 characters long : " + address);
+        if (firstName.length() < 2 || firstName.length() > 20) {
+            throw new AutomobileManagementPrivateCustomerException("The client first name must be between 2 and 20 characters long : " + name + " " + firstName);
+        }
+        if (address == null) {
+            throw new AutomobileManagementPrivateCustomerException("The address can not be null.");
+        }
+        if (address.length() > 100) {
+            throw new AutomobileManagementPrivateCustomerException("The address must not be more than 100 characters long : " + address);
         }
         if (nbRentals < 0) {
             throw new AutomobileManagementPrivateCustomerException("The number of rentals must be positive : " + nbRentals);
@@ -83,14 +85,13 @@ public class PrivateCustomer extends Customers {
         }
         this.type = CustomerType.PRIVATE;
         this.age = age;
-        this.name = name;
         this.firstName = firstName;
         this.address = address;
         this.nbRentals = nbRentals;
     }
 
     public String getName() {
-        return name;
+        return super.getName();
     }
     public String getFirstName() {
         return firstName;
@@ -133,9 +134,8 @@ public class PrivateCustomer extends Customers {
         if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
-        // Casting obj to PrivateCustomer to compare all attributes
         PrivateCustomer customer = (PrivateCustomer) obj;
-        return this.name.equals(customer.name) &&
+        return this.getName().equals(customer.getName()) &&
                 this.firstName.equals(customer.firstName);
     }
 }

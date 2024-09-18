@@ -1,19 +1,15 @@
 package customer;
 
 import exceptions.AutomobileManagementProfessionalCustomerException;
+import exceptions.AutomobileManagementCustomerException;
 import exceptions.AutomobileManagementDateException;
 import management.DateManagement;
 
 /**
  * Class to define a professional customer.
- * @extends Customers
+ * @extends SpecificCustomer
  */
-public class ProfessionalCustomer extends Customers{
-    /**
-     * The name of the professional customer.
-     * Must be between 2 and 20 characters long.
-     */
-    private String name;
+public class ProfessionalCustomer extends SpecificCustomer {
     /**
      * The type of the customer.
      * Always set to PROFESSIONAL.
@@ -39,12 +35,10 @@ public class ProfessionalCustomer extends Customers{
     public ProfessionalCustomer(String name, 
                                 String rentalDate, 
                                 double discountRate
-                                ) throws AutomobileManagementProfessionalCustomerException {
-        if (name.length() < 2 || name.length() > 20) {
-            throw new AutomobileManagementProfessionalCustomerException("The professional customer's name must be between 2 and 20 characters.");
-        }
+                                ) throws AutomobileManagementCustomerException {
+        super(name);
         if (discountRate < 0.0 || discountRate > 1.0) {
-            throw new AutomobileManagementProfessionalCustomerException("The discount rate must be between 0.0 and 1.0.");
+            throw new AutomobileManagementProfessionalCustomerException("Discount rate must be between 0.0 and 1.0 : " + discountRate);
         }
         try {
             if (rentalDate == null) {
@@ -54,13 +48,12 @@ public class ProfessionalCustomer extends Customers{
         } catch (AutomobileManagementDateException e) {
             throw new AutomobileManagementProfessionalCustomerException(e.getMessage());
         }
-        this.name = name;
         this.type = CustomerType.PROFESSIONAL;
         this.discountRate = discountRate;
     }
 
     public String getName() {
-        return this.name;
+        return super.getName();
     }
     public CustomerType getType() {
         return this.type;
@@ -93,7 +86,7 @@ public class ProfessionalCustomer extends Customers{
         }
         // Casting obj to ProfessionalCustomer to compare name and type.
         ProfessionalCustomer client = (ProfessionalCustomer) obj;
-        return this.name.equals(client.name) &&
+        return this.getName().equals(client.getName()) &&
                 this.type.equals(client.type);
     }
 }

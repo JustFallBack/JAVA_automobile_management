@@ -1,6 +1,7 @@
 package customer;
 
 import exceptions.AutomobileManagementProfessionalCustomerException;
+import exceptions.AutomobileManagementCustomerException;
 import exceptions.AutomobileManagementPrivateCustomerException;
 
 import java.util.ArrayList;
@@ -56,9 +57,9 @@ public class Customers extends ArrayList<Customers> {
                 this.add(customer);
             }
             else {
-                throw new AutomobileManagementPrivateCustomerException("This customer already exists :\n" + customer);
+                throw new AutomobileManagementPrivateCustomerException("A customer with the same name and first name already exists : " + customer.getName() + " " + customer.getFirstName());
             }
-        } catch(AutomobileManagementPrivateCustomerException e) {
+        } catch(AutomobileManagementCustomerException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -76,9 +77,9 @@ public class Customers extends ArrayList<Customers> {
                 this.add(customer);
             }
             else {
-                throw new AutomobileManagementProfessionalCustomerException("This customer already exists :\n" + customer);
+                throw new AutomobileManagementProfessionalCustomerException("A customer with the same name already exists : " + customer.getName());
             }
-        } catch(AutomobileManagementProfessionalCustomerException e) {
+        } catch(AutomobileManagementCustomerException e) {
             System.out.println(e.getMessage());
         }
     }
