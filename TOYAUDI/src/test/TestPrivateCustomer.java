@@ -6,7 +6,7 @@ public class TestPrivateCustomer {
     public static void main(String[] args) {
         Customers customers = Customers.getInstance();
 
-        // Valid private customers
+        /* Valid private customers */
         customers.addPrivateCustomer("Darmanin", "Gerald", "28 rue de la Vicieuse, Paris", 73, "01/01/2001", 4);
         customers.addPrivateCustomer("Hollande", "François", "12 rue de la Liberté, Paris", 55, "01/01/2024", 1);
         customers.addPrivateCustomer("De Gaulle", "Charles", "34 boulevard de l'Égalité, Lyon", 78, "02/02/2002", 2);
@@ -19,22 +19,22 @@ public class TestPrivateCustomer {
         customers.addPrivateCustomer("Bardella", "Jordan", "321 avenue de la Liberté, Bordeaux", 47, "09/09/2014", 9);
         customers.addPrivateCustomer("Mitterand", "François", "654 rue de l'Égalité, Lille", 53, "10/10/2008", 10);
 
-        // Invalid private customers
-        // Short name
+        /* Invalid private customers */
+        // Name too short
         customers.addPrivateCustomer("A", "Prenom", "123 rue de la Liberté, Paris", 24, "01/01/2000", 1);
-        // Long name
+        // Name too long
         customers.addPrivateCustomer("NomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNom", "Prenom", "123 rue de la Liberté, Paris", 24, "01/01/2000", 1);
-        // Short first name
+        // First name too short
         customers.addPrivateCustomer("Nom", "A", "123 rue de la Liberté, Paris", 24, "01/01/2000", 1);
-        // Long first name
+        // First name too long
         customers.addPrivateCustomer("Nom", "PrenomPrenomPrenomPrenomPrenomPrenomPrenomPrenomPrenomPrenom", "123 rue de la Liberté, Paris", 24, "01/01/2000", 1);
-        // Short address
+        // Address too short
         customers.addPrivateCustomer("Nom", "Prenom", "123", 24, "01/01/2000", 1);
-        // Long address
+        // Address too long
         customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, ParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParis", 24, "01/01/2000", 1);
-        // Low age
+        // Age too low
         customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 16, "01/01/2000", 1);
-        // High age
+        // Age too high
         customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 82, "01/01/2000", 1);
         // Incorrect date format
         customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 24, "01-01-2000", 1);

@@ -1,15 +1,15 @@
 package customer;
 
-/*
- * Add a Customers class of type ArrayList (not a class containing an ArrayList...) to store individual or professional customers with a method to display the customers.
- * Only one instance of Customers can be created.
- * Modify the constructor(s) to add a new instance of individual or professional customers to the list of customers in Customers.
- */
 import exceptions.AutomobileManagementProfessionalCustomerException;
 import exceptions.AutomobileManagementPrivateCustomerException;
 
 import java.util.ArrayList;
 
+/**
+ * Class of type ArrayList to store individual or professional customers.
+ * Only one instance of Customers can be created.
+ * @extends ArrayList<Customers>
+ */
 public class Customers extends ArrayList<Customers> {
     private static Customers instance;
 
@@ -26,7 +26,11 @@ public class Customers extends ArrayList<Customers> {
         }
     }
 
-    // Search in the ArrayList of customers if the customerObject passed as an argument exists.
+    /**
+     * Check if a customer already exists in the collection.
+     * @param customerObject The customer to compare.
+     * @return True if the customer already exists in the collection, false otherwise.
+     */
     public boolean existsCustomer(Customers customerObject) {
         for (Customers customer : this) {
             if (customer.equals(customerObject)) {
@@ -36,6 +40,15 @@ public class Customers extends ArrayList<Customers> {
         return false;
     }
 
+    /**
+     * Add a private customer to the collection.
+     * @param name The name of the customer.
+     * @param firstName The first name of the customer.
+     * @param address The address of the customer.
+     * @param age The age of the customer.
+     * @param date The date of birth of the customer.
+     * @param nbRentals The number of times the customer has rented a vehicle.
+     */
     public void addPrivateCustomer(String name, String firstName, String address, int age, String date, int nbRentals) {
         try {
             PrivateCustomer customer = new PrivateCustomer(name, firstName, address, age, date, nbRentals);
@@ -50,6 +63,12 @@ public class Customers extends ArrayList<Customers> {
         }
     }
 
+    /**
+     * Add a professional customer to the collection.
+     * @param name The name of the customer.
+     * @param date The date when the customer became a professional customer.
+     * @param discountRate The discount rate of the customer.
+     */
     public void addProfessionalCustomer(String name, String date, double discountRate) {
         try {
             ProfessionalCustomer customer = new ProfessionalCustomer(name, date, discountRate);

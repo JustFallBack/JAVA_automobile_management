@@ -4,6 +4,10 @@ import exceptions.AutomobileManagementVehicleException;
 
 import java.util.Vector;
 
+/**
+ * Class that represents a collection of vehicles.
+ * @extends Vector<Vehicles>
+ */
 public class Vehicles extends Vector<Vehicles> {
     private static Vehicles instance;
 
@@ -20,7 +24,11 @@ public class Vehicles extends Vector<Vehicles> {
         }
     }
 
-    // Two vehicle are equal if their id is the same
+    /**
+     * Check if a vehicle already exists in the collection.
+     * @param vehicleObject The vehicle to compare.
+     * @return True if the vehicle already exists in the collection, false otherwise.
+     */
     public boolean existsVehicle(Vehicles vehicleObject) {
         for (Vehicles vehicle : this) {
             if (vehicle.equals(vehicleObject)) {
@@ -30,6 +38,16 @@ public class Vehicles extends Vector<Vehicles> {
         return false;
     }
 
+    /**
+     * Add a vehicle to the collection.
+     * @param id Registration number of the vehicle.
+     * @param numberOfDoors Number of doors of the vehicle.
+     * @param type Type of the vehicle.
+     * @param manufacturer Manufacturer of the vehicle.
+     * @param model Model of the vehicle.
+     * @param mileage Mileage of the vehicle.
+     * @param purchasingPrice Purchasing price of the vehicle.
+     */
     public void addVehicle(String id,
                             int numberOfDoors, 
                             TypeVehicle type, 

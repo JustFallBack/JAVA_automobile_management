@@ -1,37 +1,54 @@
 package management;
-/*
- * Rental dates will be managed by a DateManagement class
- * containing a date attribute (String), a final format attribute (''dd/MM/yyyy'')
- * and an instance of the SimpleDateFormat class.
- */
-import exceptions.AutomobileManagementCustomerException;
+
+import exceptions.AutomobileManagementDateException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Rental dates will be managed by a DateManagement class
+ * containing a date attribute (String), a final format attribute (''dd/MM/yyyy'')
+ * and an instance of the SimpleDateFormat class.
+ */
 public class DateManagement {
+    /**
+     * The formatted date.
+     */
     private String date;
-    private final String dateFormat = "dd/MM/yyyy";
-    // Date that prevents dates from being before the specified date (TOYAUDI creation date).
-    private final String creationDateTOYAUDI = "01/01/2000";
-    private final SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+    /**
+     * The format of the date.
+     */
+    private final String DATE_FORMAT = "dd/MM/yyyy";
+    /**
+     * Date that prevents dates from being before the specified date (TOYAUDI creation date).
+     */
+    private final String CREATION_DATE_TOYAUDI = "01/01/2000";
+    /**
+     * Instance of the SimpleDateFormat class.
+     */
+    private final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
     public String getDate() {
         return this.date;
     }
 
-    public DateManagement(String date) throws AutomobileManagementCustomerException {
+    /**
+     * Constructor of the class DateManagement.
+     * @param date The date to implement.
+     * @throws AutomobileManagementDateException
+     */
+    public DateManagement(String date) throws AutomobileManagementDateException {
         try {
             Date dateObject = sdf.parse(date);
-            if (dateObject.after(sdf.parse(this.creationDateTOYAUDI))) {
+            if (dateObject.after(sdf.parse(this.CREATION_DATE_TOYAUDI))) {
                 this.date = date;
             }
             else {
-                throw new AutomobileManagementCustomerException("The date must be after 01/01/2000.");
+                throw new AutomobileManagementDateException("The date must be after 01/01/2000 : " + date);
             }
         } catch (ParseException e) {
-            throw new AutomobileManagementCustomerException("The date is not in the correct format: 'dd/mm/yyyy'.");
+            throw new AutomobileManagementDateException("The date is not in the correct format: 'dd/mm/yyyy' : " + date);
         }
     }
 
@@ -47,21 +64,18 @@ public class DateManagement {
         return null;
     }
 
+    /**
+     * Two DateManagement objects are equal if their dates are equal.
+     */
     @Override
     public boolean equals(Object obj) {
-        // Comparing memory addresses
         if (this == obj) {
             return true;
         }
-        // If the comparison object is null, return false
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
+        if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
         DateManagement dateObj = (DateManagement) obj;
         return this.date.equals(dateObj.date);
     }
-
 }

@@ -1,32 +1,57 @@
 package customer;
-/*
- * or professional (ProfessionalCustomer, attributes: name, type, rental date, and discount rate applied to professional customers).
- * Add the constructors, etc. and any other methods you deem necessary now or during the project.
- */
 
 import exceptions.AutomobileManagementProfessionalCustomerException;
-import exceptions.AutomobileManagementCustomerException;
+import exceptions.AutomobileManagementDateException;
 import management.DateManagement;
 
+/**
+ * Class to define a professional customer.
+ * @extends Customers
+ */
 public class ProfessionalCustomer extends Customers{
+    /**
+     * The name of the professional customer.
+     * Must be between 2 and 20 characters long.
+     */
     private String name;
-    private CustomerType type;
+    /**
+     * The type of the customer.
+     * Always set to PROFESSIONAL.
+     */
+    private final CustomerType type;
+    /**
+     * The date the professional customer rented a vehicle.
+     */
     private DateManagement rentalDate;
+    /**
+     * The discount rate of the professional customer.
+     * Must be between 0.0 and 1.0.
+     */
     private double discountRate;
 
-    public ProfessionalCustomer(String name, String rentalDate, double discountRate) throws AutomobileManagementProfessionalCustomerException {
+    /**
+     * Constructor of the class ProfessionalCustomer.
+     * @param name The name of the professional customer.
+     * @param rentalDate The date when the professional customer rented a vehicle.
+     * @param discountRate The discount rate of the professional customer.
+     * @throws AutomobileManagementProfessionalCustomerException
+     */
+    public ProfessionalCustomer(String name, 
+                                String rentalDate, 
+                                double discountRate
+                                ) throws AutomobileManagementProfessionalCustomerException {
         if (name.length() < 2 || name.length() > 20) {
             throw new AutomobileManagementProfessionalCustomerException("The professional customer's name must be between 2 and 20 characters.");
-        }
-        if (rentalDate == null) {
-            throw new AutomobileManagementProfessionalCustomerException("The date cannot be null.");
         }
         if (discountRate < 0.0 || discountRate > 1.0) {
             throw new AutomobileManagementProfessionalCustomerException("The discount rate must be between 0.0 and 1.0.");
         }
         try {
+            if (rentalDate == null) {
+                throw new AutomobileManagementDateException("The date cannot be null.");
+            }
             this.rentalDate = new DateManagement(rentalDate);
-        } catch (AutomobileManagementCustomerException e) {
+        } catch (AutomobileManagementDateException e) {
             throw new AutomobileManagementProfessionalCustomerException(e.getMessage());
         }
         this.name = name;
@@ -55,24 +80,20 @@ public class ProfessionalCustomer extends Customers{
                 "\nDiscount rate : " + this.getDiscountRate() + "\n";
     }
 
+    /**
+     * Two professional customers are equal if they have the same name and type.
+     */
     @Override
     public boolean equals(Object obj) {
-        // Comparing memory addresses
         if (this == obj) {
             return true;
         }
-        // If the comparison object is null, return false
-        if (obj == null) {
+        if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        // Casting obj to ProfessionalCustomer to compare all attributes
+        // Casting obj to ProfessionalCustomer to compare name and type.
         ProfessionalCustomer client = (ProfessionalCustomer) obj;
         return this.name.equals(client.name) &&
-                this.type.equals(client.type) &&
-                this.rentalDate.equals(client.rentalDate) &&
-                Double.compare(this.discountRate, client.discountRate) == 0;
+                this.type.equals(client.type);
     }
 }

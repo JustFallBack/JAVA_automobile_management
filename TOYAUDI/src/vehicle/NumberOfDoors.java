@@ -2,6 +2,9 @@ package vehicle;
 
 import exceptions.AutomobileManagementVehicleException;
 
+/**
+ * Enum that represents the number of doors of a vehicle.
+ */
 public enum NumberOfDoors {
 
     TWO_DOORS(2, "small and sporty"),
@@ -25,13 +28,18 @@ public enum NumberOfDoors {
         return description;
     }
 
+    /** 
+     * Return an NumberOfDoors object depending of the integer which represents the nb of doors of the car.
+     * @param numberOfDoors the number of doors of the car
+     * @return The NumberOfDoors object corresponding to the number of doors
+     */
     public static NumberOfDoors getTypeFromNbDoors(int numberOfDoors) throws AutomobileManagementVehicleException {
         for (NumberOfDoors type : NumberOfDoors.values()) {
             if (type.getNumberOfDoors() == numberOfDoors) {
                 return type;
             }
         }
-        throw new AutomobileManagementVehicleException("No vehicle with this number of doors" + numberOfDoors);
+        throw new AutomobileManagementVehicleException("Vehicles must have 2,3,4 or 5 doors : " + numberOfDoors);
     }
 
 }
