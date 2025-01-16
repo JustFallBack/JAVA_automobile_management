@@ -2,8 +2,6 @@ package customer;
 
 import exceptions.AutomobileManagementProfessionalCustomerException;
 import exceptions.AutomobileManagementCustomerException;
-import exceptions.AutomobileManagementDateException;
-import management.DateManagement;
 
 /**
  * Class to define a professional customer.
@@ -15,10 +13,6 @@ public class ProfessionalCustomer extends SpecificCustomer {
      * Always set to PROFESSIONAL.
      */
     private final CustomerType type;
-    /**
-     * The date the professional customer rented a vehicle.
-     */
-    private DateManagement rentalDate;
     /**
      * The discount rate of the professional customer.
      * Must be between 0.0 and 1.0.
@@ -36,17 +30,9 @@ public class ProfessionalCustomer extends SpecificCustomer {
                                 String rentalDate, 
                                 double discountRate
                                 ) throws AutomobileManagementCustomerException {
-        super(name);
+        super(name, rentalDate);
         if (discountRate < 0.0 || discountRate > 1.0) {
             throw new AutomobileManagementProfessionalCustomerException("Discount rate must be between 0.0 and 1.0 : " + discountRate);
-        }
-        try {
-            if (rentalDate == null) {
-                throw new AutomobileManagementDateException("The date cannot be null.");
-            }
-            this.rentalDate = new DateManagement(rentalDate);
-        } catch (AutomobileManagementDateException e) {
-            throw new AutomobileManagementProfessionalCustomerException(e.getMessage());
         }
         this.type = CustomerType.PROFESSIONAL;
         this.discountRate = discountRate;
@@ -59,7 +45,7 @@ public class ProfessionalCustomer extends SpecificCustomer {
         return this.type;
     }
     public String getRentalDate() {
-        return this.rentalDate.toString();
+        return super.getRentalDate().toString();
     }
     public double getDiscountRate() {
         return this.discountRate;

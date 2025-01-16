@@ -1,6 +1,7 @@
 package vehicle;
 
 import exceptions.AutomobileManagementVehicleException;
+import management.DateManagement;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -40,6 +41,12 @@ public abstract class SpecificVehicle extends Vehicles {
      * Must be positive, not zero and under 1,000,000€.
      */
     private double purchasingPrice;
+    /** 
+     * Last date the vehicle was rented.
+     * Used to check for availability.
+     * If the vehicle was never rented, the date is set to null.
+     */
+    private DateManagement lastRented;
 
     /**
      * Constructor of the class SpecificVehicle.
@@ -78,6 +85,7 @@ public abstract class SpecificVehicle extends Vehicles {
         this.model = model;
         this.mileage = new BigDecimal(mileage).setScale(2, RoundingMode.HALF_UP).doubleValue();
         this.purchasingPrice = new BigDecimal(purchasingPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        this.lastRented = null;
     }
 
     public String getId() {
@@ -98,6 +106,9 @@ public abstract class SpecificVehicle extends Vehicles {
     public double getPurchasingPrice() {
         return purchasingPrice;
     }
+    public DateManagement getLastRented() {
+        return lastRented;
+    }
 
     public abstract TypeVehicle getType();
 
@@ -109,7 +120,8 @@ public abstract class SpecificVehicle extends Vehicles {
                 "\nManufacturer : " + this.getManufacturer() +
                 "\nModel : " + this.getModel() +
                 "\nMileage : " + this.getMileage() + " km" +
-                "\nPurchasing price : " + this.getPurchasingPrice() + " €";
+                "\nPurchasing price : " + this.getPurchasingPrice() + " €" +
+                "\nLast rented : " + this.getLastRented();
     }
 
     /**

@@ -4,7 +4,7 @@ package exceptions;
  *  is made to rent a vehicle that is not in the list of vehicles available for rent.
  */ 
 public class AutomobileManagementVehiculesRentException extends AutomobileManagementVehicleException {
-    public AutomobileManagementVehiculesRentException() {
-        super("This vehicle is no longer available for rent.");
+    public AutomobileManagementVehiculesRentException(String s) {
+        super(s);
     }
 }

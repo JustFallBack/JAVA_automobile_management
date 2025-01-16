@@ -1,14 +1,17 @@
 package customer;
 import exceptions.AutomobileManagementPrivateCustomerException;
 import exceptions.AutomobileManagementCustomerException;
-import exceptions.AutomobileManagementDateException;
-import management.DateManagement;
 
 /**
  * Class to define a private customer.
  * @extends SpecificCustomer
  */
 public class PrivateCustomer extends SpecificCustomer {
+    /**
+     * The type of the customer.
+     * Always set to PRIVATE.
+     */
+    private final CustomerType type;
     /**
      * The first name of the private customer.
      * Must be between 2 and 20 characters long.
@@ -25,15 +28,6 @@ public class PrivateCustomer extends SpecificCustomer {
      */
     private int age;
     /**
-     * The type of the customer.
-     * Always set to PRIVATE.
-     */
-    private final CustomerType type;
-    /**
-     * The date of birth of the private customer.
-     */
-    private DateManagement date;
-    /**
      * The number of times the private customer has rented a car.
      * Must be positive.
      */
@@ -45,7 +39,7 @@ public class PrivateCustomer extends SpecificCustomer {
      * @param firstName The first name of the private customer.
      * @param address The address of the private customer.
      * @param age The age of the private customer.
-     * @param date The date of birth of the private customer.
+     * @param date The date the private customer rented a vehicle.
      * @param nbRentals The number of times the private customer has rented a car.
      * @throws AutomobileManagementPrivateCustomerException
      */
@@ -56,7 +50,7 @@ public class PrivateCustomer extends SpecificCustomer {
                              String date, 
                              int nbRentals
                              ) throws AutomobileManagementCustomerException {
-        super(name);
+        super(name, date);
         if (age < 18 || age > 81) {
             throw new AutomobileManagementPrivateCustomerException("The client age must be between 18 and 81 years old : " + age);
         }
@@ -75,19 +69,19 @@ public class PrivateCustomer extends SpecificCustomer {
         if (nbRentals < 0) {
             throw new AutomobileManagementPrivateCustomerException("The number of rentals must be positive : " + nbRentals);
         }
-        try {
-            if (date == null) {
-                throw new AutomobileManagementDateException("The date cannot be null.");
-            }
-            this.date = new DateManagement(date);
-        } catch (AutomobileManagementDateException e) {
-            throw new AutomobileManagementPrivateCustomerException(e.getMessage());
-        }
+
         this.type = CustomerType.PRIVATE;
         this.age = age;
         this.firstName = firstName;
         this.address = address;
         this.nbRentals = nbRentals;
+    }
+
+    /**
+     * Increment the number of rentals of the private customer.
+     */
+    public void incrementNbRentals() {
+        this.nbRentals++;
     }
 
     public String getName() {
@@ -105,8 +99,8 @@ public class PrivateCustomer extends SpecificCustomer {
     public int getNbRentals() {
         return nbRentals;
     }
-    public String getDate() {
-        return date.toString();
+    public String getRentalDate() {
+        return super.getRentalDate();
     }
     public CustomerType getType() {
         return type;
@@ -118,8 +112,8 @@ public class PrivateCustomer extends SpecificCustomer {
                 "\nFirst name : " + this.getFirstName() +
                 "\nAddress : " +  this.getAddress() +
                 "\nAge : " + this.getAge() +
-                "\nRentals number : " + this.getNbRentals() +
-                "\nDate : " + this.getDate() +
+                "\nNumber of rentals : " + this.getNbRentals() +
+                "\nDate : " + this.getRentalDate() +
                 "\nType : " + this.getType() + "\n";
     }
 

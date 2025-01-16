@@ -25,6 +25,8 @@ public class TestProfessionalCustomer {
         customers.addProfessionalCustomer("Metrot","05/04/2013",28);
         // Rate is negative
         customers.addProfessionalCustomer("StarBuick","05/04/2013",-0.023);
+        // Date is null
+        customers.addProfessionalCustomer("NoDate",null,0.023);
         // Date is not in the correct format
         customers.addProfessionalCustomer("TooBadToStay","05/04/",0.023);
         // Date is before the creation date of TOYAUDI.

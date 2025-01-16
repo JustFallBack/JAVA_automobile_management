@@ -40,6 +40,9 @@ public class DateManagement {
      */
     public DateManagement(String date) throws AutomobileManagementDateException {
         try {
+            if (date == null) {
+                throw new AutomobileManagementDateException("The date cannot be null.");
+            }
             Date dateObject = sdf.parse(date);
             if (dateObject.after(sdf.parse(this.CREATION_DATE_TOYAUDI))) {
                 this.date = date;
