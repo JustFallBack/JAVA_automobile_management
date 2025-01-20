@@ -42,11 +42,16 @@ public abstract class SpecificVehicle extends Vehicles {
      */
     private double purchasingPrice;
     /** 
-     * Last date the vehicle was rented.
-     * Used to check for availability.
+     * The date the rental of the vehicle started.
+     * Used to calculate the price of the rental.
      * If the vehicle was never rented, the date is set to null.
      */
-    private DateManagement lastRented;
+    private DateManagement rentedWhen;
+    /**
+     * The mileage of the vehicle when the rental ends.
+     * Must be positive and under 1,000,000 km.
+     */
+    private double endRentalMileage;
 
     /**
      * Constructor of the class SpecificVehicle.
@@ -85,7 +90,8 @@ public abstract class SpecificVehicle extends Vehicles {
         this.model = model;
         this.mileage = new BigDecimal(mileage).setScale(2, RoundingMode.HALF_UP).doubleValue();
         this.purchasingPrice = new BigDecimal(purchasingPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        this.lastRented = null;
+        this.rentedWhen = null;
+        this.endRentalMileage = mileage;
     }
 
     public String getId() {
@@ -106,8 +112,11 @@ public abstract class SpecificVehicle extends Vehicles {
     public double getPurchasingPrice() {
         return purchasingPrice;
     }
-    public DateManagement getLastRented() {
-        return lastRented;
+    public DateManagement getRentedWhen() {
+        return rentedWhen;
+    }
+    public double getEndRentalMileage() {
+        return endRentalMileage;
     }
 
     public abstract TypeVehicle getType();
@@ -121,7 +130,8 @@ public abstract class SpecificVehicle extends Vehicles {
                 "\nModel : " + this.getModel() +
                 "\nMileage : " + this.getMileage() + " km" +
                 "\nPurchasing price : " + this.getPurchasingPrice() + " €" +
-                "\nLast rented : " + this.getLastRented();
+                "\nRented the " + this.getRentedWhen() + 
+                "\nEnd rental mileage : " + this.getEndRentalMileage() + " km";
     }
 
     /**

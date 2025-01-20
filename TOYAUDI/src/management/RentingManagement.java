@@ -1,11 +1,11 @@
 package management;
 
+import java.text.ParseException;
+
 import customer.PrivateCustomer;
 import customer.SpecificCustomer;
 import vehicle.SpecificVehicle;
-import exceptions.AutomobileManagementCustomerException;
 import exceptions.AutomobileManagementDateException;
-import exceptions.AutomobileManagementException;
 import exceptions.AutomobileManagementVehiculesRentException;
 
 /**
@@ -27,7 +27,7 @@ import exceptions.AutomobileManagementVehiculesRentException;
  * ou un professionnel et dans la classe GestionVente le prix de vente. 
  * Dans le cas de la location, elle fera appel à la méthode prixLocation de la classe Gestion (à implémenter) 
  * qui permettra de retourner le prix de la location et sera égale à : 
- * reduction x (prixParKilometrePourCeTypeDeVehicule x kilometrageEffectue + prixParuourPourCeTypeDeVehicule x nombreDeuour x (1 + nombreDePortes/10) ).
+ * reduction x (prixParKilometrePourCeTypeDeVehicule x kilometrageEffectue + prixParJourPourCeTypeDeVehicule x nombreDeJour x (1 + nombreDePortes/10) ).
  * La réduction ne peut être négative. 
  * Pour un client particulier, la réduction sera égale à : 1.0 – 0.005 x nbLocations, et pour un 
  * client professionnel, la réduction sera égale au taux. 
@@ -38,20 +38,28 @@ public class RentingManagement extends Management {
     
     /**
      * Method to request a rental. No verification on the mileage.
+     * If the vehicle is available for rent, it is removed from the list of available vehicles for rent and for sale (done in Management class).
+     * The rental date is updated for the customer.
      * @param vehicle The vehicle to rent.
      * @param customer The customer renting the vehicle.
      * @return true if the rental request is successful, false otherwise.
      */
-    public boolean rentalRequest(SpecificVehicle vehicle, SpecificCustomer customer) {
-        if (removeFromRentAvailableVehicles(vehicle)) {
+    public boolean rentalRequest(
+                                SpecificVehicle vehicle, 
+                                SpecificCustomer customer, 
+                                String rentalDate) 
+                                throws AutomobileManagementDateException {
+
+        if (super.getRentAvailableVehicles().contains(vehicle)) {
+            DateManagement newRentalDate = new DateManagement(rentalDate);
             addToCurrentlyRentedVehicles(customer, vehicle);
+            customer.setRentalDate(newRentalDate); 
             if (customer instanceof PrivateCustomer) {
                 ((PrivateCustomer) customer).incrementNbRentals();
             }
             return true;
         }
         return false;
-
     }
 
     public void getPrice(SpecificVehicle vehicle, SpecificCustomer customer) {
@@ -69,15 +77,28 @@ public class RentingManagement extends Management {
         if (super.getCurrentlyRentedVehicles().containsKey(customer)) {
             super.removeFromCurrentlyRentedVehicles(customer);
             super.addToRentAvailableVehicles(vehicle);
+            if (super.addToSaleAvailableVehicles(vehicle)) {
+                System.out.println("The vehicle is now available for sale :\n" + vehicle.toString());
+            } 
+            else {
+                System.out.println("The vehicle is not available for sale :\n" + vehicle.toString());
+            }
         }
         else {
-            throw new AutomobileManagementVehiculesRentException("The customer is not renting any vehicle.");
+            throw new AutomobileManagementVehiculesRentException("The customer is not renting any vehicle : \n" + customer.toString());
         }
-        // the endRentalDate is updated in the customer object
+
+        // Update the end rental date.
         try {
+            DateManagement dateManagement = new DateManagement(); // blank date
+            if (dateManagement.isBefore(endRentalDate, customer.getRentalDate(), false)) {
+                throw new AutomobileManagementVehiculesRentException("The end rental date must be after the rental date.");
+            }
+            // must be done on the vehicle maybe ???
             customer.setRentalDate(new DateManagement(endRentalDate));
-        } catch (AutomobileManagementDateException e) {
+        } catch (AutomobileManagementDateException | ParseException e) {
             throw new AutomobileManagementVehiculesRentException(e.getMessage());
         }
+        // Update the mileage.
     }
 }

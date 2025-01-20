@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import vehicle.Vehicles;
-import customer.Customers;
+import vehicle.SpecificVehicle;
+import customer.SpecificCustomer;
 
 /**
  * Avant de procéder à l’implémentation des classes de gestion de la location/vente des véhicules, 
@@ -15,20 +15,22 @@ import customer.Customers;
  * ainsi que les véhicules en cours de location (HashMap) sous forme d’un tableau associant un client à une automobile. 
  * La classe Gestion disposera également des attributs indiquant le kilométrage à partir duquel un véhicule est disposé à 
  * la vente (double) ainsi que le kilométrage maximum à pattir duquel un véhicule ne peut plus être proposé à la vente (double).
+ * 
+ * 
  */
 public abstract class Management {
     /**
      * Set of every available vehicles to rent.
      */
-    private HashSet<Vehicles> rentAvailableVehicles;
+    private HashSet<SpecificVehicle> rentAvailableVehicles;
     /**
      * List of every available vehicles to sell.
      */
-    private LinkedList<Vehicles> saleAvailableVehicles;
+    private LinkedList<SpecificVehicle> saleAvailableVehicles;
     /**
      * Hash map where a customer is associated to a car. The customer is renting the car.
      */
-    private HashMap<Customers, Vehicles> currentlyRentedVehicles;
+    private HashMap<SpecificCustomer, SpecificVehicle> currentlyRentedVehicles;
     /**
      * Kilometer threshold from which a vehicle is available for sale.
      */
@@ -38,12 +40,14 @@ public abstract class Management {
      */
     private double maxSaleThreshold;
 
+
+
     /**
      * Remove a vehicle from the list of vehicles available for rent.
      * @param vehicle The vehicle being removed from the list of vehicles available for rent.
      * @return true if the vehicle is successfully removed from the list of vehicles available for rent, false otherwise.
      */
-    public boolean removeFromRentAvailableVehicles(Vehicles vehicle) {
+    public boolean removeFromRentAvailableVehicles(SpecificVehicle vehicle) {
         return this.rentAvailableVehicles.remove(vehicle);
     }
 
@@ -52,12 +56,17 @@ public abstract class Management {
      * @param customer The customer renting the vehicle.
      * @return true if the vehicle is successfully removed from the list of vehicles currently rented, false otherwise.
      */
-    public boolean removeFromCurrentlyRentedVehicles(Customers customer) {
-        if (this.currentlyRentedVehicles.containsKey(customer)) {
-            this.currentlyRentedVehicles.remove(customer);
-            return true;
-        }
-        return false;
+    public boolean removeFromCurrentlyRentedVehicles(SpecificCustomer customer) {
+         return (this.currentlyRentedVehicles.remove(customer) != null);
+    }
+
+    /**
+     * Remove a vehicle from the list of vehicles available for sale.
+     * @param vehicle
+     * @return true if the vehicle is successfully removed from the list of vehicles available for sale, false otherwise.
+     */
+    public boolean removeFromSaleAvailableVehicles(SpecificVehicle vehicle) {
+        return this.saleAvailableVehicles.remove(vehicle);
     }
 
     /**
@@ -65,31 +74,48 @@ public abstract class Management {
      * @param vehicle The vehicle to add.
      * @return true if the vehicle is successfully added to the list of vehicles available for rent, false otherwise.
      */
-    public boolean addToRentAvailableVehicles(Vehicles vehicle) {
+    public boolean addToRentAvailableVehicles(SpecificVehicle vehicle) {
         return this.rentAvailableVehicles.add(vehicle);
     }
 
     /**
      * Add the vehicle and the customer to the HashMap of vehicles/customers currently rented.
+     * Same client cannot rent two vehicles at the same time.
+     * The vehicle must be in the list of vehicles available for rent.
+     * When rented, a vehicle is removed from the list of vehicles available for rent and for sale.
      * @param customer The customer renting the vehicle.
      * @param vehicle The vehicle to rent.
      * @return true if the vehicle and the customer are successfully added to the HashMap of vehicles/customers currently rented, false otherwise.
      */
-    public boolean addToCurrentlyRentedVehicles(Customers customer, Vehicles vehicle) {
-        if (!currentlyRentedVehicles.containsKey(customer)) {
+    public boolean addToCurrentlyRentedVehicles(SpecificCustomer customer, SpecificVehicle vehicle) {
+        if (!currentlyRentedVehicles.containsKey(customer) && rentAvailableVehicles.contains(vehicle)) {
             currentlyRentedVehicles.put(customer, vehicle);
+            removeFromRentAvailableVehicles(vehicle);
+            removeFromSaleAvailableVehicles(vehicle);
             return true;
         }
         return false;
     }
 
-    public HashSet<Vehicles> getRentAvailableVehicles() {
+    /**
+     * Add a vehicle to the list of vehicles available for sale, if the mileage is between the sale thresholds.
+     * @return
+     */
+    public boolean addToSaleAvailableVehicles(SpecificVehicle vehicle) {
+        if (vehicle.getMileage() >= this.saleThreshold && vehicle.getMileage() < this.maxSaleThreshold) {
+            return this.saleAvailableVehicles.add(vehicle);
+        }
+        return false;
+    }
+
+
+    public HashSet<SpecificVehicle> getRentAvailableVehicles() {
         return this.rentAvailableVehicles;
     }
-    public LinkedList<Vehicles> getSaleAvailableVehicles() {
+    public LinkedList<SpecificVehicle> getSaleAvailableVehicles() {
         return this.saleAvailableVehicles;
     }
-    public HashMap<Customers, Vehicles> getCurrentlyRentedVehicles() {
+    public HashMap<SpecificCustomer, SpecificVehicle> getCurrentlyRentedVehicles() {
         return this.currentlyRentedVehicles;
     }
     public double getSaleThreshold() {
