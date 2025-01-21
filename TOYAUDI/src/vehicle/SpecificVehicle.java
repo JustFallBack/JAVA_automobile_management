@@ -42,11 +42,11 @@ public abstract class SpecificVehicle extends Vehicles {
      */
     private double purchasingPrice;
     /** 
-     * The date the rental of the vehicle started.
+     * The date the rental of the vehicle ended.
      * Used to calculate the price of the rental.
-     * If the vehicle was never rented, the date is set to null.
+     * Initially, the date is set to null.
      */
-    private DateManagement rentedWhen;
+    private DateManagement endRentalDate;
     /**
      * The mileage of the vehicle when the rental ends.
      * Must be positive and under 1,000,000 km.
@@ -90,7 +90,7 @@ public abstract class SpecificVehicle extends Vehicles {
         this.model = model;
         this.mileage = new BigDecimal(mileage).setScale(2, RoundingMode.HALF_UP).doubleValue();
         this.purchasingPrice = new BigDecimal(purchasingPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        this.rentedWhen = null;
+        this.endRentalDate = null;
         this.endRentalMileage = mileage;
     }
 
@@ -112,17 +112,33 @@ public abstract class SpecificVehicle extends Vehicles {
     public double getPurchasingPrice() {
         return purchasingPrice;
     }
-    public DateManagement getRentedWhen() {
-        return rentedWhen;
+    public DateManagement getEndRentalDate() {
+        return endRentalDate;
     }
     public double getEndRentalMileage() {
         return endRentalMileage;
+    }
+
+    public void setEndRentalDate(DateManagement endRentalDate) {
+        this.endRentalDate = endRentalDate;
+    }
+    public void setEndRentalMileage(double endRentalMileage) {
+        this.endRentalMileage = endRentalMileage;
     }
 
     public abstract TypeVehicle getType();
 
     @Override
     public String toString() {
+        if(this.getEndRentalDate() == null) {
+            return "Vehicle type : " + this.getType() +
+                "\nRegistration number : " + this.getId() +
+                "\nNumber of doors : " + this.getNumberOfDoors() +
+                "\nManufacturer : " + this.getManufacturer() +
+                "\nModel : " + this.getModel() +
+                "\nMileage : " + this.getMileage() + " km" +
+                "\nPurchasing price : " + this.getPurchasingPrice() + " €";
+        }
         return "Vehicle type : " + this.getType() +
                 "\nRegistration number : " + this.getId() +
                 "\nNumber of doors : " + this.getNumberOfDoors() +
@@ -130,7 +146,7 @@ public abstract class SpecificVehicle extends Vehicles {
                 "\nModel : " + this.getModel() +
                 "\nMileage : " + this.getMileage() + " km" +
                 "\nPurchasing price : " + this.getPurchasingPrice() + " €" +
-                "\nRented the " + this.getRentedWhen() + 
+                "\nRented ended the " + this.getEndRentalDate() + 
                 "\nEnd rental mileage : " + this.getEndRentalMileage() + " km";
     }
 
