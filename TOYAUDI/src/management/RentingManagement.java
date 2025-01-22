@@ -2,7 +2,6 @@ package management;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.ParseException;
 
 import customer.PrivateCustomer;
 import customer.SpecificCustomer;
@@ -68,11 +67,20 @@ public class RentingManagement extends Management {
         }
     }
 
-    public void getPrice(SpecificCustomer customer, SpecificVehicle vehicle) {
+    public void getReceipt(SpecificCustomer customer, SpecificVehicle vehicle) {
 
     }
 
-    // need to add the endRentalDate and endRentalMileage
+    /**
+     * Method to end a rental. The vehicle is added to the list of available vehicles for rent and for sale, if allowed.
+     * The end rental date and the end rental mileage are updated on the vehicle.
+     * @param customer The customer ending the rental.
+     * @param vehicle The vehicle rented by the customer.
+     * @param endRentalDate The date the rental ends.
+     * @param endRentalMileage The mileage of the vehicle when the rental ends.
+     * @return True if the rental ends successfully, exception raised otherwise.
+     * @throws AutomobileManagementVehiculesRentException
+     */
     public boolean endRental(
                         SpecificCustomer customer, 
                         SpecificVehicle vehicle, 
@@ -80,7 +88,14 @@ public class RentingManagement extends Management {
                         double endRentalMileage)
                         throws AutomobileManagementVehiculesRentException {
 
-        if (super.getCurrentlyRentedVehicles().containsKey(customer)) {
+        // Check if the customer is renting a vehicle.
+        if (!(super.getCurrentlyRentedVehicles().containsKey(customer))) {
+            throw new AutomobileManagementVehiculesRentException("The customer is not renting any vehicle : \n" + customer.toString());
+        } 
+        // Check if the vehicle passed as an argument and the vehicle rented by the customer are the same.
+        if (super.getCurrentlyRentedVehicles().get(customer) != vehicle) {
+            throw new AutomobileManagementVehiculesRentException("The customer is not renting this vehicle : \n" + customer.toString() + "\n" + vehicle.toString());
+        }
             super.removeFromCurrentlyRentedVehicles(customer);
             super.addToRentAvailableVehicles(vehicle);
             if (super.addToSaleAvailableVehicles(vehicle)) {
@@ -89,23 +104,24 @@ public class RentingManagement extends Management {
             else {
                 System.out.println("The vehicle is not available for sale :\n" + vehicle.toString());
             }
-        }
-        else {
-            throw new AutomobileManagementVehiculesRentException("The customer is not renting any vehicle : \n" + customer.toString());
-        }
 
-        // Update the end rental date and the end rental mileage.
+        // Update the end rental date and the end rental mileage on the vehicule.
         try {
             DateManagement dateManagement = new DateManagement(endRentalDate); // check the validity of the date
             if (dateManagement.isBefore(endRentalDate, customer.getRentalDate(), false)) { // doesn't affect dateManagement instance
-                throw new AutomobileManagementVehiculesRentException("The end rental date must be after the rental date.");
+                throw new AutomobileManagementVehiculesRentException("The end rental date (" + endRentalDate + ") must be after the rental date (" + customer.getRentalDate() + ").");
             }
             vehicle.setEndRentalDate(dateManagement);
-            vehicle.setEndRentalMileage(checkMileage(endRentalMileage));
-        } catch (AutomobileManagementDateException | ParseException e) {
+            endRentalMileage = checkMileage(endRentalMileage);
+            if (vehicle.getMileage() > endRentalMileage) {
+                throw new AutomobileManagementVehiculesRentException("The end rental mileage (" + endRentalMileage +") must be greater than the current mileage (" + vehicle.getMileage() + ")of the vehicle.");
+            }
+            vehicle.setEndRentalMileage(endRentalMileage);
+        } catch (AutomobileManagementDateException e) {
             throw new AutomobileManagementVehiculesRentException(e.getMessage());
         }
-        getPrice(customer, vehicle);
+        // Get the bill and set the mileage to the end rental mileage.
+        getReceipt(customer, vehicle);
         return true;
     }
 
@@ -115,7 +131,7 @@ public class RentingManagement extends Management {
      * @return The mileage rounded to 2 decimal places.
      * @throws AutomobileManagementVehiculesRentException
      */
-    public double checkMileage(double mileage) throws AutomobileManagementVehiculesRentException {
+    private double checkMileage(double mileage) throws AutomobileManagementVehiculesRentException {
         if (mileage <= 0 || mileage > 1000000) {
             throw new AutomobileManagementVehiculesRentException("Mileage must be positive and under 1,000,000 km : " + mileage);
         }

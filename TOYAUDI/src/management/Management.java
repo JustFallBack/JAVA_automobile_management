@@ -6,6 +6,9 @@ import java.util.LinkedList;
 
 import vehicle.SpecificVehicle;
 import customer.SpecificCustomer;
+import exceptions.AutomobileManagementException;
+import customer.PrivateCustomer;
+import customer.ProfessionalCustomer;
 
 /**
  * Avant de procéder à l’implémentation des classes de gestion de la location/vente des véhicules, 
@@ -108,6 +111,35 @@ public abstract class Management {
         return false;
     }
 
+    /**
+     * Get the price of the rental.
+     * The formula to calculate the discountRate for a private customer is : 1.0 - 0.005 * nbRentals. Above 100 rentals, the discountRate is 0.5.
+     * The formula to calculate the rental price is : discountRate * ( pricePerKilometerForThisTypeOfVehicle * distanceTraveled + pricePerDayForThisTypeOfVehicle * nbRentalDays * (1 + numberOfDoors/10) ).
+     * @param customer The customer who rented the vehicle.
+     * @param vehicle The vehicle rented by the customer.
+     * @return The price of the rental.
+     * @throws AutomobileManagementException
+     */
+    public double getRentalPrice(SpecificCustomer customer, SpecificVehicle vehicle) throws AutomobileManagementException {
+        double discountRate;
+        if (customer instanceof PrivateCustomer) {
+            if (((PrivateCustomer) customer).getNbRentals() > 100) {
+                discountRate = 0.5;
+            }
+            else {
+                discountRate = 1.0 - 0.005 * ((PrivateCustomer) customer).getNbRentals();
+            }
+        }
+        else {
+            discountRate = ((ProfessionalCustomer) customer).getDiscountRate();
+        }
+        
+        DateManagement dateManagementBlank = new DateManagement(); // blank DateManagement instance to use non-static method
+        double distanceTraveled = vehicle.getEndRentalMileage() - vehicle.getMileage();
+        int nbRentalDays = dateManagementBlank.differenceInDays(customer.getRentalDate(), vehicle.getEndRentalDate());
+
+        return ( discountRate ) * ( (vehicle.getType()).getPricePerKilometer() * distanceTraveled + (vehicle.getType()).getDailyRentPrice() * nbRentalDays * (1 + vehicle.getNumberOfDoors() / 10) );
+    }
 
     public HashSet<SpecificVehicle> getRentAvailableVehicles() {
         return this.rentAvailableVehicles;

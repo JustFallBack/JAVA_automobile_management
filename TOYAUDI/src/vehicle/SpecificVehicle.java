@@ -112,8 +112,8 @@ public abstract class SpecificVehicle extends Vehicles {
     public double getPurchasingPrice() {
         return purchasingPrice;
     }
-    public DateManagement getEndRentalDate() {
-        return endRentalDate;
+    public String getEndRentalDate() {
+        return endRentalDate.toString();
     }
     public double getEndRentalMileage() {
         return endRentalMileage;
