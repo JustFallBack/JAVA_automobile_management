@@ -6,7 +6,7 @@ package exceptions;
  * its base class to "This vehicle is no longer available for sale". 
  */
 public class AutomobileManagementVehicleSaleException extends AutomobileManagementVehicleException {
-    public AutomobileManagementVehicleSaleException() {
-        super("This vehicle is no longer available for sale.");
+    public AutomobileManagementVehicleSaleException(String s) {
+        super(s);
     }
 }

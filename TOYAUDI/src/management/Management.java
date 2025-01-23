@@ -6,21 +6,19 @@ import java.util.LinkedList;
 
 import vehicle.SpecificVehicle;
 import customer.SpecificCustomer;
+import exceptions.AutomobileManagementDateException;
 import exceptions.AutomobileManagementException;
+import exceptions.AutomobileManagementVehiculesRentException;
 import customer.PrivateCustomer;
 import customer.ProfessionalCustomer;
 
-/**
- * Avant de procéder à l’implémentation des classes de gestion de la location/vente des véhicules, 
- * vous allez ajouter une classe de structuration des informations Gestion qu’il n’est pas possible 
- * d’instancier, ayant pour rôle de sauvegarder toutes les données permettant de gérer les 
- * locations/ventes : les véhicules disponibles à la location (HashSet) et disponibles à la vente (LinkedList) 
- * ainsi que les véhicules en cours de location (HashMap) sous forme d’un tableau associant un client à une automobile. 
- * La classe Gestion disposera également des attributs indiquant le kilométrage à partir duquel un véhicule est disposé à 
- * la vente (double) ainsi que le kilométrage maximum à pattir duquel un véhicule ne peut plus être proposé à la vente (double).
- * 
- * 
- */
+ /**
+  * Class that structures the information for the management of the rental/sale of vehicles.
+  * Contains all the methods to manage the rental/sale of vehicles (remove and add to the different lists, get the price of the rental/sale).
+  * Contains the vehicles available for rent (HashSet), for sale (LinkedList) and the vehicles currently rented (HashMap).
+  * Contains the kilometer threshold from which a vehicle is available for sale and the kilometer limit from which a vehicle is not available for sale anymore.
+  * Also contains the minimum price for a vehicle for sale.
+  */
 public abstract class Management {
     /**
      * Set of every available vehicles to rent.
@@ -37,12 +35,18 @@ public abstract class Management {
     /**
      * Kilometer threshold from which a vehicle is available for sale.
      */
-    private double saleThreshold;
+    private final double SALE_THRESHOLD = 75000.00;
     /**
-     * Kilometer limit from which a vehicle is not available for sale.
+     * Kilometer limit from which a vehicle is not available for sale anymore.
      */
-    private double maxSaleThreshold;
+    private final double MAX_SALE_THRESHOLD = 250000.00;
+    /**
+     * The minimum price for a vehicle for sale (when the mileage equals the MAX_SALE_THRESHOLD).
+     */
+    private final double MIN_SALE_PRICE = 5000.00;
 
+
+    public abstract void getReceipt(SpecificCustomer customer, SpecificVehicle vehicle) throws AutomobileManagementException;
 
 
     /**
@@ -65,7 +69,7 @@ public abstract class Management {
 
     /**
      * Remove a vehicle from the list of vehicles available for sale.
-     * @param vehicle
+     * @param vehicle The vehicle being removed from the list of vehicles available for sale.
      * @return true if the vehicle is successfully removed from the list of vehicles available for sale, false otherwise.
      */
     public boolean removeFromSaleAvailableVehicles(SpecificVehicle vehicle) {
@@ -102,10 +106,11 @@ public abstract class Management {
 
     /**
      * Add a vehicle to the list of vehicles available for sale, if the mileage is between the sale thresholds.
-     * @return
+     * @param vehicle The vehicle to add.
+     * @return true if the vehicle is successfully added to the list of vehicles available for sale, false otherwise.
      */
     public boolean addToSaleAvailableVehicles(SpecificVehicle vehicle) {
-        if (vehicle.getMileage() >= this.saleThreshold && vehicle.getMileage() < this.maxSaleThreshold) {
+        if (vehicle.getMileage() >= this.SALE_THRESHOLD && vehicle.getMileage() < this.MAX_SALE_THRESHOLD) {
             return this.saleAvailableVehicles.add(vehicle);
         }
         return false;
@@ -120,7 +125,7 @@ public abstract class Management {
      * @return The price of the rental.
      * @throws AutomobileManagementException
      */
-    public double getRentalPrice(SpecificCustomer customer, SpecificVehicle vehicle) throws AutomobileManagementException {
+    public double getRentalPrice(SpecificCustomer customer, SpecificVehicle vehicle) throws AutomobileManagementVehiculesRentException {
         double discountRate;
         if (customer instanceof PrivateCustomer) {
             if (((PrivateCustomer) customer).getNbRentals() > 100) {
@@ -136,9 +141,23 @@ public abstract class Management {
         
         DateManagement dateManagementBlank = new DateManagement(); // blank DateManagement instance to use non-static method
         double distanceTraveled = vehicle.getEndRentalMileage() - vehicle.getMileage();
-        int nbRentalDays = dateManagementBlank.differenceInDays(customer.getRentalDate(), vehicle.getEndRentalDate());
+        try {
+            int nbRentalDays = dateManagementBlank.differenceInDays(customer.getRentalDate(), vehicle.getEndRentalDate());
+            return ( discountRate ) * ( (vehicle.getType()).getPricePerKilometer() * distanceTraveled + (vehicle.getType()).getDailyRentPrice() * nbRentalDays * (1 + vehicle.getNumberOfDoors() / 10) );
+        } catch (AutomobileManagementDateException e) {
+            throw new AutomobileManagementVehiculesRentException(e.getMessage());
+        }
+    }
 
-        return ( discountRate ) * ( (vehicle.getType()).getPricePerKilometer() * distanceTraveled + (vehicle.getType()).getDailyRentPrice() * nbRentalDays * (1 + vehicle.getNumberOfDoors() / 10) );
+    /**
+     * Get the price of the sale.
+     * The formula to calculate the sale price is : purchasingPrice * (1 - (mileage / MAX_SALE_THRESHOLD)) + MIN_SALE_PRICE * (mileage / MAX_SALE_THRESHOLD).
+     * With this formula, the price of the vehicle decreases linearly from the purchasing price to the MIN_SALE_PRICE when the mileage reaches the MAX_SALE_THRESHOLD.
+     * @param vehicle The vehicle to sell.
+     * @return The price of the sale.
+     */
+    public double getSalePrice(SpecificVehicle vehicle) {
+        return vehicle.getPurchasingPrice() * (1 - (vehicle.getMileage() / this.MAX_SALE_THRESHOLD)) + this.getMinSalePrice() * (vehicle.getMileage() / this.MAX_SALE_THRESHOLD);
     }
 
     public HashSet<SpecificVehicle> getRentAvailableVehicles() {
@@ -151,9 +170,12 @@ public abstract class Management {
         return this.currentlyRentedVehicles;
     }
     public double getSaleThreshold() {
-        return this.saleThreshold;
+        return this.SALE_THRESHOLD;
     }
     public double getMaxSaleThreshold() {
-        return this.maxSaleThreshold;
+        return this.MAX_SALE_THRESHOLD;
+    }
+    public double getMinSalePrice() {
+        return this.MIN_SALE_PRICE;
     }
 }

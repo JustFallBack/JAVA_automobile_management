@@ -79,7 +79,7 @@ public abstract class SpecificVehicle extends Vehicles {
                 throw new AutomobileManagementVehicleException("Mileage must be positive and under 1,000,000 km : " + mileage);
             }
             if (purchasingPrice <= 0 || purchasingPrice > 1000000) {
-                throw new AutomobileManagementVehicleException("Purchasing price must be positive, not zero and under 1,000,000€ : " + purchasingPrice);
+                throw new AutomobileManagementVehicleException("Purchasing price must be positive, not zero and under $1,000,000 : " + purchasingPrice);
             }
             this.id = new RegistrationNumber(id);
             this.nbDoors = NumberOfDoors.getTypeFromNbDoors(numberOfDoors);
@@ -125,29 +125,21 @@ public abstract class SpecificVehicle extends Vehicles {
     public void setEndRentalMileage(double endRentalMileage) {
         this.endRentalMileage = endRentalMileage;
     }
+    public void setNewMileage(double newMileage) {
+        this.mileage = newMileage;
+    }
 
     public abstract TypeVehicle getType();
 
     @Override
     public String toString() {
-        if(this.getEndRentalDate() == null) {
-            return "Vehicle type : " + this.getType() +
-                "\nRegistration number : " + this.getId() +
-                "\nNumber of doors : " + this.getNumberOfDoors() +
-                "\nManufacturer : " + this.getManufacturer() +
-                "\nModel : " + this.getModel() +
-                "\nMileage : " + this.getMileage() + " km" +
-                "\nPurchasing price : " + this.getPurchasingPrice() + " €";
-        }
         return "Vehicle type : " + this.getType() +
-                "\nRegistration number : " + this.getId() +
-                "\nNumber of doors : " + this.getNumberOfDoors() +
-                "\nManufacturer : " + this.getManufacturer() +
-                "\nModel : " + this.getModel() +
-                "\nMileage : " + this.getMileage() + " km" +
-                "\nPurchasing price : " + this.getPurchasingPrice() + " €" +
-                "\nRented ended the " + this.getEndRentalDate() + 
-                "\nEnd rental mileage : " + this.getEndRentalMileage() + " km";
+            "\nRegistration number : " + this.getId() +
+            "\nNumber of doors : " + this.getNumberOfDoors() +
+            "\nManufacturer : " + this.getManufacturer() +
+            "\nModel : " + this.getModel() +
+            "\nMileage : " + this.getMileage() + " km" +
+            "\nPurchasing price : " + this.getPurchasingPrice() + " €";
     }
 
     /**
