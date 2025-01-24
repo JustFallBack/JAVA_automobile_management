@@ -39,7 +39,6 @@ public class PrivateCustomer extends SpecificCustomer {
      * @param firstName The first name of the private customer.
      * @param address The address of the private customer.
      * @param age The age of the private customer.
-     * @param date The date the private customer rented a vehicle.
      * @param nbRentals The number of times the private customer has rented a car.
      * @throws AutomobileManagementPrivateCustomerException
      */
@@ -47,10 +46,9 @@ public class PrivateCustomer extends SpecificCustomer {
                              String firstName, 
                              String address, 
                              int age, 
-                             String date, 
                              int nbRentals
                              ) throws AutomobileManagementCustomerException {
-        super(name, date);
+        super(name);
         if (age < 18 || age > 81) {
             throw new AutomobileManagementPrivateCustomerException("The client age must be between 18 and 81 years old : " + age);
         }
@@ -69,7 +67,6 @@ public class PrivateCustomer extends SpecificCustomer {
         if (nbRentals < 0) {
             throw new AutomobileManagementPrivateCustomerException("The number of rentals must be positive : " + nbRentals);
         }
-
         this.type = CustomerType.PRIVATE;
         this.age = age;
         this.firstName = firstName;
@@ -108,7 +105,7 @@ public class PrivateCustomer extends SpecificCustomer {
 
     @Override
     public String toString() {
-        return "Name : " + this.getName() +
+        return  "\nName : " + this.getName() +
                 "\nFirst name : " + this.getFirstName() +
                 "\nAddress : " +  this.getAddress() +
                 "\nAge : " + this.getAge() +

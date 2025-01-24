@@ -22,15 +22,13 @@ public class ProfessionalCustomer extends SpecificCustomer {
     /**
      * Constructor of the class ProfessionalCustomer.
      * @param name The name of the professional customer.
-     * @param rentalDate The date when the professional customer rented a vehicle.
      * @param discountRate The discount rate of the professional customer.
      * @throws AutomobileManagementProfessionalCustomerException
      */
     public ProfessionalCustomer(String name, 
-                                String rentalDate, 
                                 double discountRate
                                 ) throws AutomobileManagementCustomerException {
-        super(name, rentalDate);
+        super(name);
         if (discountRate < 0.0 || discountRate > 1.0) {
             throw new AutomobileManagementProfessionalCustomerException("Discount rate must be between 0.0 and 1.0 : " + discountRate);
         }

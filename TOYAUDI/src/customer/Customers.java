@@ -47,12 +47,11 @@ public class Customers extends ArrayList<Customers> {
      * @param firstName The first name of the customer.
      * @param address The address of the customer.
      * @param age The age of the customer.
-     * @param date The date of birth of the customer.
      * @param nbRentals The number of times the customer has rented a vehicle.
      */
-    public void addPrivateCustomer(String name, String firstName, String address, int age, String date, int nbRentals) {
+    public void addPrivateCustomer(String name, String firstName, String address, int age, int nbRentals) {
         try {
-            PrivateCustomer customer = new PrivateCustomer(name, firstName, address, age, date, nbRentals);
+            PrivateCustomer customer = new PrivateCustomer(name, firstName, address, age, nbRentals);
             if(!existsCustomer(customer)) {
                 this.add(customer);
             }
@@ -67,12 +66,11 @@ public class Customers extends ArrayList<Customers> {
     /**
      * Add a professional customer to the collection.
      * @param name The name of the customer.
-     * @param date The date when the customer became a professional customer.
      * @param discountRate The discount rate of the customer.
      */
-    public void addProfessionalCustomer(String name, String date, double discountRate) {
+    public void addProfessionalCustomer(String name, double discountRate) {
         try {
-            ProfessionalCustomer customer = new ProfessionalCustomer(name, date, discountRate);
+            ProfessionalCustomer customer = new ProfessionalCustomer(name, discountRate);
             if (!existsCustomer(customer)) {
                 this.add(customer);
             }

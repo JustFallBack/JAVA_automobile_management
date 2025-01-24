@@ -1,7 +1,6 @@
 package customer;
 
 import exceptions.AutomobileManagementCustomerException;
-import exceptions.AutomobileManagementDateException;
 import management.DateManagement;
 
 /**
@@ -16,6 +15,7 @@ public abstract class SpecificCustomer extends Customers {
     private String name;
     /**
      * The date the customer rented a vehicle.
+     * When created, a customer has not rented a vehicle yet, so the constructor doesn't take a rental date as a parameter.
      */
     private DateManagement rentalDate;
 
@@ -24,7 +24,7 @@ public abstract class SpecificCustomer extends Customers {
      * @param name The name of the customer (private or professional).
      * @throws AutomobileManagementCustomerException
      */
-    public SpecificCustomer(String name, String rentalDate) throws AutomobileManagementCustomerException {
+    public SpecificCustomer(String name) throws AutomobileManagementCustomerException {
         try {
             if (name == null) {
                 throw new AutomobileManagementCustomerException("Name can not be null.");
@@ -35,11 +35,6 @@ public abstract class SpecificCustomer extends Customers {
         } catch (AutomobileManagementCustomerException e) {
             throw e;
         }
-        try {
-            this.rentalDate = new DateManagement(rentalDate);
-        } catch (AutomobileManagementDateException e) {
-            throw new AutomobileManagementCustomerException(e.getMessage());
-        }
         this.name = name;
     }
 
@@ -47,7 +42,11 @@ public abstract class SpecificCustomer extends Customers {
         return this.name;
     }
     public String getRentalDate() {
-        return this.rentalDate.toString();
+        try {
+            return this.rentalDate.toString();
+        } catch (NullPointerException e) {
+            return "No rental date.";
+        }
     }
     public void setRentalDate(DateManagement rentalDate) {
         this.rentalDate = rentalDate;
