@@ -40,21 +40,24 @@ public class DateManagement {
      * @throws AutomobileManagementDateException
      */
     public DateManagement(String date) throws AutomobileManagementDateException {
+        if (date == null) {
+            throw new AutomobileManagementDateException("The date cannot be null.");
+        }
+
         try {
-            if (date == null) {
-                throw new AutomobileManagementDateException("The date cannot be null.");
-            }
-            if (isBefore(this.CREATION_DATE_TOYAUDI, date)) {
-                if (isBefore(date, "01/01/2100")) {
-                    this.date = date;
-                } else {
-                    throw new AutomobileManagementDateException("The date must be before 01/01/2100 : " + date);
-                }
-            } else {
-                throw new AutomobileManagementDateException("The date must be after 01/01/2000 : " + date);
-            }
-        } catch (AutomobileManagementDateException e) {
+            sdf.parse(date);
+        } catch (ParseException e) {
             throw new AutomobileManagementDateException("The date is not in the correct format: 'dd/mm/yyyy' : " + date);
+        }
+        
+        if (isBefore(this.CREATION_DATE_TOYAUDI, date, false)) {
+            if (isBefore(date, "01/01/2100")) {
+                this.date = date;
+            } else {
+                throw new AutomobileManagementDateException("The date must be before 01/01/2100 : " + date);
+            }
+        } else {
+            throw new AutomobileManagementDateException("The date must be on or after " + CREATION_DATE_TOYAUDI + ": " + date);
         }
     }
 

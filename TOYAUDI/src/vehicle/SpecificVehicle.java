@@ -72,6 +72,9 @@ public abstract class SpecificVehicle extends Vehicles {
                         ) throws AutomobileManagementVehicleException {
 
         try {
+            if (model == null || manufacturer == null) { // verification on ID is done in RegistrationNumber
+                throw new AutomobileManagementVehicleException("Cannot create a vehicle with null values.");
+            }
             if (model.length() < 2 || model.length() > 24) {
                 throw new AutomobileManagementVehicleException("Model name must be between 2 and 24 characters long : " + model);
             }
@@ -133,8 +136,9 @@ public abstract class SpecificVehicle extends Vehicles {
 
     @Override
     public String toString() {
-        return "Vehicle type : " + this.getType() +
+        return 
             "\nRegistration number : " + this.getId() +
+            "\nVehicle type : " + this.getType() +
             "\nNumber of doors : " + this.getNumberOfDoors() +
             "\nManufacturer : " + this.getManufacturer() +
             "\nModel : " + this.getModel() +

@@ -53,10 +53,10 @@ public class ProfessionalCustomer extends SpecificCustomer {
 
     @Override
     public String toString() {
-        return "Name : " + this.getName() +
-                "\nType : " + this.getType() +
-                "\nRental date : " + this.getRentalDate() +
-                "\nDiscount rate : " + this.getDiscountRate() + "\n";
+        return "\nName : " + this.getName() +
+               "\nType : " + this.getType() +
+               "\nRental date : " + this.getRentalDate() +
+               "\nDiscount rate : " + this.getDiscountRate() + "\n";
     }
 
     /**

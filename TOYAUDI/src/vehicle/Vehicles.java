@@ -18,9 +18,12 @@ public class Vehicles extends Vector<Vehicles> {
         return instance;
     }
 
+    /**
+     * Display all the vehicles in the collection.
+     */
     public void displayVehicles() {
         for (Vehicles vehicle : this) {
-            System.out.println(vehicle + "\n");
+            System.out.println(vehicle.toString() + "\n");
         }
     }
 
@@ -56,6 +59,9 @@ public class Vehicles extends Vector<Vehicles> {
                             double mileage, 
                             double purchasingPrice) {
         try {
+            if (type == null) {
+                throw new AutomobileManagementVehicleException("The type of the vehicle cannot be null.\n");
+            }
             switch (type) {
                 case TypeVehicle.UTILITY:
                     UtilityVehicle utilityVehicle = new UtilityVehicle(id, numberOfDoors, manufacturer, model, mileage, purchasingPrice);

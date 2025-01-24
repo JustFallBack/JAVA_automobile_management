@@ -2,6 +2,10 @@ package test;
 
 import customer.Customers;
 
+/**
+ * Class to test the PrivateCustomer class.
+ * It tests different cases of valid and invalid creation of private customers.
+ */
 public class TestPrivateCustomer {
     public static void main(String[] args) {
         Customers customers = Customers.getInstance();
@@ -19,33 +23,49 @@ public class TestPrivateCustomer {
         customers.addPrivateCustomer("Bardella", "Jordan", "321 avenue de la Liberté, Bordeaux", 47, "09/09/2014", 9);
         customers.addPrivateCustomer("Mitterand", "François", "654 rue de l'Égalité, Lille", 53, "10/10/2008", 10);
         customers.addPrivateCustomer("Nom", "Prénom", "", 18, "10/10/2008", 0);
+
         /* Invalid private customers */
         // Client already exists
         customers.addPrivateCustomer("Nom", "Prénom", "28", 32, "05/05/2004", 6);
+
+        /* Invalid name */
         // Name is null
         customers.addPrivateCustomer(null, "François", "654 rue de l'Égalité, Lille", 53, "10/10/2008", 10);
-        // First name is null
-        customers.addPrivateCustomer("Mitterand", null, "654 rue de l'Égalité, Lille", 53, "10/10/2008", 10);
         // Name too short
         customers.addPrivateCustomer("A", "Prenom", "123 rue de la Liberté, Paris", 24, "01/02/2000", 1);
         // Name too long
         customers.addPrivateCustomer("NomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNomNom", "Prenom", "123 rue de la Liberté, Paris", 24, "01/01/2000", 1);
+
+        /* Invalid first name */
+        // First name is null
+        customers.addPrivateCustomer("Mitterand", null, "654 rue de l'Égalité, Lille", 53, "10/10/2008", 10);
         // First name too short
         customers.addPrivateCustomer("Nom", "A", "123 rue de la Liberté, Paris", 24, "01/02/2000", 1);
         // First name too long
-        customers.addPrivateCustomer("Nom", "PrenomPrenomPrenomPrenomPrenomPrenomPrenomPrenomPrenomPrenom", "123 rue de la Liberté, Paris", 24, "01/01/2000", 1);
+        customers.addPrivateCustomer("Nom", "PrenomPrenomPrenomPrenomPrenomPrenomPrenomPrenomPrenomPrenom", "123 rue de la Liberté, Paris", 24, "01/02/2000", 1);
+
+        /* Invalid address */
         // Address is null
         customers.addPrivateCustomer("Nom", "Prenom", null, 24, "01/02/2000", 1);
         // Address too long
-        customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, ParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParis", 24, "01/01/2000", 1);
+        customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, ParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParisParis", 24, "01/02/2000", 1);
+
+        /* Invalid age */
         // Age too low
         customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 16, "01/02/2000", 1);
         // Age too high
         customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 82, "01/02/2000", 1);
+        
+        /* Invalid date */
+        // Date is null
+        customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 24, null, 1);
         // Incorrect date format
         customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 24, "01-01-2000", 1);
         // Date before TOYAUDI creation date
         customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 24, "01/01/2000", 1);
+        
+        /* Invalid number of rentals */
+        customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 24, "01/02/2000", 1);
         // Negative number of rentals
         customers.addPrivateCustomer("Nom", "Prenom", "123 rue de la Liberté, Paris", 24, "01/02/2000", -1);
 

@@ -40,17 +40,13 @@ public class TestVehicles {
         vehicles.addVehicle("TT-555-TT", 4, TypeVehicle.BREAK, Manufacturer.VOLSKA, "Tiguan Allspace", 129000.87, 33000);
     
         // Lower boundary for doors, model name, mileage, and price
-        vehicles.addVehicle("AB-123-CD", 2, TypeVehicle.SEDAN, Manufacturer.PEUGOT, "C4", 0.1, 1);
+        vehicles.addVehicle("AB-123-CD", 2, TypeVehicle.SEDAN, Manufacturer.PEUGOT, "C4", 0, 0.1);
         // Upper boundary for doors, mileage, and price
-        vehicles.addVehicle("EF-456-GH", 5, TypeVehicle.BREAK, Manufacturer.FORDEON, "Focus Estate", 999999.9, 999999);
-        // Valid ID, 3 doors, mid-range mileage and price
-        vehicles.addVehicle("IJ-789-KL", 3, TypeVehicle.UTILITY, Manufacturer.VOLSKA, "Amarok", 500000.55, 500000);
-        // Valid ID with 4 doors, mileage and price within range
-        vehicles.addVehicle("MN-101-OP", 4, TypeVehicle.SEDAN, Manufacturer.TOYAUDI, "Camry", 200000.25, 30000);
-        // Minimum valid mileage and price
-        vehicles.addVehicle("QR-112-ST", 2, TypeVehicle.BREAK, Manufacturer.CHEVROVER, "Camarat", 0, 0.1);
+        vehicles.addVehicle("EF-456-GH", 5, TypeVehicle.BREAK, Manufacturer.FORDEON, "Focus Estate", 1000000, 1000000);
         
         /* Invalid vehicles */
+
+        /* Invalid ID */
         // Invalid ID : a vehicle with the same ID already exists
         vehicles.addVehicle("TT-228-FT", 3, TypeVehicle.BREAK, Manufacturer.CHEVROVER, "CAMARAT", 284.45, 900);
         // Invalid ID: missing dash
@@ -62,6 +58,7 @@ public class TestVehicles {
         // Invalid ID : letters must be capital
         vehicles.addVehicle("FF-FFF-Ff", 4, TypeVehicle.SEDAN, Manufacturer.HYENDA, "clio 2", 50.5, 27500);
 
+        /* Invalid number of doors */
         // Too few doors
         vehicles.addVehicle("UV-223-WX", 1, TypeVehicle.BREAK, Manufacturer.VOLSKA, "Golf SW", 20000.0, 10000);
         // Too many doors
@@ -69,22 +66,35 @@ public class TestVehicles {
         // Negative number of doors
         vehicles.addVehicle("ZY-UBU-CC", -6, TypeVehicle.UTILITY, Manufacturer.HYENDA, "Palisade", 30000.0, 50000);
 
+        /* Invalid mileage */
         // Negative mileage
         vehicles.addVehicle("CD-445-EF", 4, TypeVehicle.SEDAN, Manufacturer.FORDEON, "Mondeo", -500.0, 20000);
         // Exceeds upper limit for mileage
-        vehicles.addVehicle("GH-556-IJ", 3, TypeVehicle.BREAK, Manufacturer.TOYAUDI, "Avensis", 1000001, 15000);
+        vehicles.addVehicle("GH-556-IJ", 3, TypeVehicle.BREAK, Manufacturer.TOYAUDI, "Avensis", 1000000.001, 15000);
 
+        /* Invalid price */
         // Negative price
         vehicles.addVehicle("KL-667-MN", 4, TypeVehicle.UTILITY, Manufacturer.CHEVROVER, "Blazer", 10000.0, -100);
         // Exceeds upper limit for price
-        vehicles.addVehicle("OP-778-QR", 5, TypeVehicle.SEDAN, Manufacturer.PEUGOT, "508", 250000.0, 1000001.235);
+        vehicles.addVehicle("OP-778-QR", 5, TypeVehicle.SEDAN, Manufacturer.PEUGOT, "508", 250000.0, 1000000.001);
         // Price is zero
         vehicles.addVehicle("28-TTT-RQ", 2, TypeVehicle.SEDAN, Manufacturer.PEUGOT, "306", 25000.599, 0);
 
+        /* Invalid model name */
         // Model name too short (less than 2 characters)
         vehicles.addVehicle("ST-889-UV", 3, TypeVehicle.BREAK, Manufacturer.FORDEON, "F", 50000.0, 30000);
         // Model name too long (more than 24 characters)
         vehicles.addVehicle("WX-990-YZ", 4, TypeVehicle.UTILITY, Manufacturer.HYENDA, "VeryLongModelNameBeyondLimit", 80000.0, 45000);
+        // Model name is null
+        vehicles.addVehicle("AB-123-CD", 3, TypeVehicle.SEDAN, Manufacturer.HYENDA, null, 756.8, 15700);
+        
+        /* Invalid type */
+        // Type is null
+        vehicles.addVehicle("AB-123-CD", 3, null, Manufacturer.PEUGOT, "2008", 10000.5, 20000);
+
+        /* Invalid manufacturer */
+        // Manufacturer is null
+        vehicles.addVehicle("AB-123-CD", 5, TypeVehicle.SEDAN, null, "85", 107.25, 14625);
         
         vehicles.displayVehicles();
     }
