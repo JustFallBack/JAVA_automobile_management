@@ -45,9 +45,15 @@ public abstract class Management {
      */
     private final double MIN_SALE_PRICE = 5000.00;
 
-
-    public abstract void getReceipt(SpecificCustomer customer, SpecificVehicle vehicle) throws AutomobileManagementException;
-
+    /**
+     * Constructor of the class Management.
+     * Needed to initialize the lists of vehicles available for rent, for sale and the vehicles currently rented.
+     */
+    public Management() {
+        this.rentAvailableVehicles = new HashSet<SpecificVehicle>();
+        this.saleAvailableVehicles = new LinkedList<SpecificVehicle>();
+        this.currentlyRentedVehicles = new HashMap<SpecificCustomer, SpecificVehicle>();
+    }
 
     /**
      * Remove a vehicle from the list of vehicles available for rent.
@@ -158,6 +164,37 @@ public abstract class Management {
      */
     public double getSalePrice(SpecificVehicle vehicle) {
         return vehicle.getPurchasingPrice() * (1 - (vehicle.getMileage() / this.MAX_SALE_THRESHOLD)) + this.getMinSalePrice() * (vehicle.getMileage() / this.MAX_SALE_THRESHOLD);
+    }
+
+    /**
+     * Print the vehicles currently rented.
+     */
+    public void printRentedVehicule() {
+        System.out.println("---------- All current rentals ----------\n");
+        for (SpecificCustomer customer : this.currentlyRentedVehicles.keySet()) {
+            System.out.println("---- Customer renting the vehicule ----" + customer.toString());
+            System.out.println("---- Vehicle being rented ----" + this.currentlyRentedVehicles.get(customer).toString());
+        }
+    }
+
+    /**
+     * Print the vehicles available for rent.
+     */
+    public void printRentAvailableVehicles() {
+        System.out.println("---------- All vehicles available for rent ----------\n");
+        for (SpecificVehicle vehicle : this.rentAvailableVehicles) {
+            System.out.println(vehicle.toString());
+        }
+    }
+
+    /**
+     * print the vehicles available for sale.
+     */
+    public void printSaleAvailableVehicles() {
+        System.out.println("---------- All vehicles available for sale ----------\n");
+        for (SpecificVehicle vehicle : this.saleAvailableVehicles) {
+            System.out.println(vehicle.toString());
+        }
     }
 
     public HashSet<SpecificVehicle> getRentAvailableVehicles() {

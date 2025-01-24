@@ -110,7 +110,7 @@ public class PrivateCustomer extends SpecificCustomer {
                 "\nAddress : " +  this.getAddress() +
                 "\nAge : " + this.getAge() +
                 "\nNumber of rentals : " + this.getNbRentals() +
-                "\nDate : " + this.getRentalDate() +
+                "\nRental date : " + this.getRentalDate() +
                 "\nType : " + this.getType() + "\n";
     }
 

@@ -42,6 +42,21 @@ public class Vehicles extends Vector<Vehicles> {
     }
 
     /**
+     * Get a vehicle from the collection.
+     * @param id Registration number of the vehicle.
+     * @return The SpecificVehicle instance if it exists in the collection, null otherwise.
+     */
+    public SpecificVehicle getVehicle(String id) {
+        for (Vehicles vehicle : this) {
+            // Casting into SpecificVehicle to access the getId() method.
+            if (((SpecificVehicle) vehicle).getId().equals(id)) {
+                return (SpecificVehicle) vehicle;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Add a vehicle to the collection.
      * @param id Registration number of the vehicle.
      * @param numberOfDoors Number of doors of the vehicle.

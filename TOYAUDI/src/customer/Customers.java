@@ -42,6 +42,35 @@ public class Customers extends ArrayList<Customers> {
     }
 
     /**
+     * Get a PrivateCustomer from the collection.
+     * @param name The name of the customer.
+     * @param firstName The first name of the customer.
+     * @return The PrivateCustomer instance if it exists in the collection, null otherwise.
+     */
+    public PrivateCustomer getCustomer(String name, String firstName) {
+        for (Customers customer : this) {
+            if (((PrivateCustomer) customer).getName().equals(name) && ((PrivateCustomer) customer).getFirstName().equals(firstName)) {
+                return (PrivateCustomer) customer;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get a ProfessionalCustomer from the collection.
+     * @param name The name of the customer.
+     * @return The ProfessionalCustomer instance if it exists in the collection, null otherwise.
+     */
+    public ProfessionalCustomer getCustomer(String name) {
+        for (Customers customer : this) {
+            if (((ProfessionalCustomer) customer).getName().equals(name)) {
+                return (ProfessionalCustomer) customer;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Add a private customer to the collection.
      * @param name The name of the customer.
      * @param firstName The first name of the customer.

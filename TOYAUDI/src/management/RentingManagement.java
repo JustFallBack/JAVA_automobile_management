@@ -14,6 +14,19 @@ import exceptions.AutomobileManagementVehiculesRentException;
  * @extends Management
  */
 public class RentingManagement extends Management {
+    private static RentingManagement instance;
+
+    public static RentingManagement getInstance() {
+        if (instance == null) {
+            instance = new RentingManagement();
+        }
+        return instance;
+    }
+
+    public RentingManagement() {
+        super();
+    }
+
     /**
      * Method to request a rental. No verification on the mileage.
      * If the vehicle is available for rent, it is removed from the list of available vehicles for rent and for sale (done in Management class).
