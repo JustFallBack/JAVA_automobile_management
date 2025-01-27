@@ -24,11 +24,11 @@ public class TestRentManagement extends RentingManagement {
         Customers customers = Customers.getInstance();
         Vehicles vehicles = Vehicles.getInstance();
     
-        customers.addPrivateCustomer("Doe", "John", "Blank", 28, 0);
-        customers.addPrivateCustomer("Bayrou", "François", "Élysée, 125", 73, 17);
+        customers.addCustomer("Doe", "John", "Blank", 28, 0);
+        customers.addCustomer("Bayrou", "François", "Élysée, 125", 73, 17);
     
-        customers.addProfessionalCustomer("M&M's", 0.023);
-        customers.addProfessionalCustomer("Elysee", 0.01);
+        customers.addCustomer("M&M's", 0.023);
+        customers.addCustomer("Elysee", 0.01);
     
         vehicles.addVehicle("XX-XXX-XX", 3, TypeVehicle.SEDAN , Manufacturer.VOLSKA, "XR-3", 2400.356226, 25500);
         vehicles.addVehicle("2G-HK7-JJ", 5, TypeVehicle.BREAK, Manufacturer.FORDEON, "Raptor F-150", 120.412, 125000);

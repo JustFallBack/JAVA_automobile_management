@@ -78,7 +78,7 @@ public class Customers extends ArrayList<Customers> {
      * @param age The age of the customer.
      * @param nbRentals The number of times the customer has rented a vehicle.
      */
-    public void addPrivateCustomer(String name, String firstName, String address, int age, int nbRentals) {
+    public void addCustomer(String name, String firstName, String address, int age, int nbRentals) {
         try {
             PrivateCustomer customer = new PrivateCustomer(name, firstName, address, age, nbRentals);
             if(!existsCustomer(customer)) {
@@ -97,7 +97,7 @@ public class Customers extends ArrayList<Customers> {
      * @param name The name of the customer.
      * @param discountRate The discount rate of the customer.
      */
-    public void addProfessionalCustomer(String name, double discountRate) {
+    public void addCustomer(String name, double discountRate) {
         try {
             ProfessionalCustomer customer = new ProfessionalCustomer(name, discountRate);
             if (!existsCustomer(customer)) {
