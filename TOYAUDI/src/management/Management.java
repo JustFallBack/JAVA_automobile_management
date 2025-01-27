@@ -1,6 +1,8 @@
 package management;
 
 import java.util.HashSet;
+import java.math.RoundingMode;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -10,7 +12,7 @@ import exceptions.AutomobileManagementDateException;
 import exceptions.AutomobileManagementException;
 import exceptions.AutomobileManagementVehiculesRentException;
 import customer.PrivateCustomer;
-import customer.ProfessionalCustomer;
+import customer.ProfessionalCustomer; 
 
  /**
   * Class that structures the information for the management of the rental/sale of vehicles.
@@ -149,7 +151,8 @@ public abstract class Management {
         double distanceTraveled = vehicle.getEndRentalMileage() - vehicle.getMileage();
         try {
             int nbRentalDays = dateManagementBlank.differenceInDays(customer.getRentalDate(), vehicle.getEndRentalDate());
-            return ( discountRate ) * ( (vehicle.getType()).getPricePerKilometer() * distanceTraveled + (vehicle.getType()).getDailyRentPrice() * nbRentalDays * (1 + vehicle.getNumberOfDoors() / 10) );
+            double rentalPrice = ( discountRate ) * ( (vehicle.getType()).getPricePerKilometer() * distanceTraveled + (vehicle.getType()).getDailyRentPrice() * nbRentalDays * (1 + vehicle.getNumberOfDoors() / 10) );
+            return new BigDecimal(rentalPrice).setScale(2, RoundingMode.HALF_UP).doubleValue();
         } catch (AutomobileManagementDateException e) {
             throw new AutomobileManagementVehiculesRentException(e.getMessage());
         }
@@ -170,10 +173,15 @@ public abstract class Management {
      * Print the vehicles currently rented.
      */
     public void printRentedVehicule() {
-        System.out.println("---------- All current rentals ----------\n");
-        for (SpecificCustomer customer : this.currentlyRentedVehicles.keySet()) {
-            System.out.println("---- Customer renting the vehicule ----" + customer.toString());
-            System.out.println("---- Vehicle being rented ----" + this.currentlyRentedVehicles.get(customer).toString());
+        if (this.currentlyRentedVehicles.isEmpty()) {
+            System.out.println("\nNo vehicles currently rented.\n");
+        }
+        else {
+            System.out.println("\n---------- All current rentals ----------\n");
+            for (SpecificCustomer customer : this.currentlyRentedVehicles.keySet()) {
+                System.out.println("---- Customer renting the vehicule ----" + customer.toString());
+                System.out.println("---- Vehicle being rented ----" + this.currentlyRentedVehicles.get(customer).toString());
+            }
         }
     }
 
@@ -181,19 +189,29 @@ public abstract class Management {
      * Print the vehicles available for rent.
      */
     public void printRentAvailableVehicles() {
-        System.out.println("---------- All vehicles available for rent ----------\n");
-        for (SpecificVehicle vehicle : this.rentAvailableVehicles) {
-            System.out.println(vehicle.toString());
+        if (this.rentAvailableVehicles.isEmpty()) {
+            System.out.println("\nNo vehicles available for rent.\n");
+        }
+        else {
+            System.out.println("\n---------- All vehicles available for rent ----------\n");
+            for (SpecificVehicle vehicle : this.rentAvailableVehicles) {
+                System.out.println(vehicle.toString());
+            }
         }
     }
 
     /**
-     * print the vehicles available for sale.
+     * Print the vehicles available for sale.
      */
     public void printSaleAvailableVehicles() {
-        System.out.println("---------- All vehicles available for sale ----------\n");
-        for (SpecificVehicle vehicle : this.saleAvailableVehicles) {
-            System.out.println(vehicle.toString());
+        if (this.saleAvailableVehicles.isEmpty()) {
+            System.out.println("\nNo vehicles available for sale.\n");
+        }
+        else {
+            System.out.println("\n---------- All vehicles available for sale ----------\n");
+            for (SpecificVehicle vehicle : this.saleAvailableVehicles) {
+                System.out.println(vehicle.toString());
+            }
         }
     }
 

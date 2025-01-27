@@ -49,6 +49,13 @@ public class ProfessionalCustomer extends SpecificCustomer {
         return this.discountRate;
     }
 
+    /**
+     * Return a short description of the private customer.
+     */
+    public String toStringShort() {
+        return "Name : " + this.getName();
+    }
+
     @Override
     public String toString() {
         return "\nName : " + this.getName() +

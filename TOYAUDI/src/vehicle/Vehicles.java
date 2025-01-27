@@ -23,7 +23,7 @@ public class Vehicles extends Vector<Vehicles> {
      */
     public void displayVehicles() {
         for (Vehicles vehicle : this) {
-            System.out.println(vehicle.toString() + "\n");
+            System.out.println(vehicle.toString());
         }
     }
 

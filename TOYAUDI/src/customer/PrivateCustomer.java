@@ -103,6 +103,13 @@ public class PrivateCustomer extends SpecificCustomer {
         return type;
     }
 
+    /**
+     * Return a short description of the private customer.
+     */
+    public String toStringShort() {
+        return "Name : " + this.getName() + " " + this.firstName;
+    }
+
     @Override
     public String toString() {
         return  "\nName : " + this.getName() +

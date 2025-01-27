@@ -77,7 +77,7 @@ public class DateManagement {
             Date dateObject2 = sdf.parse(date2);
             return dateObject1.before(dateObject2);
         } catch (ParseException e) {
-            throw new AutomobileManagementDateException("One of the following date is not in the correct format: 'dd/mm/yyyy' : " + date1 + "\n" + date2);
+            throw new AutomobileManagementDateException("One of the following date is not in the correct format: 'dd/mm/yyyy' : " + date1 + " | " + date2);
         }
     }
 
@@ -101,7 +101,7 @@ public class DateManagement {
             }
             return dateObject1.before(dateObject2);
         } catch (ParseException e) {
-            throw new AutomobileManagementDateException("One of the following date is not in the correct format: 'dd/mm/yyyy' : " + date1 + "\n" + date2);
+            throw new AutomobileManagementDateException("One of the following date is not in the correct format: 'dd/mm/yyyy' : " + date1 + " | " + date2);
         }
     }
 

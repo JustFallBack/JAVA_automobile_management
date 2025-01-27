@@ -116,7 +116,7 @@ public abstract class SpecificVehicle extends Vehicles {
         return purchasingPrice;
     }
     public String getEndRentalDate() {
-        return endRentalDate.toString();
+        return endRentalDate.getDate();
     }
     public double getEndRentalMileage() {
         return endRentalMileage;
@@ -134,6 +134,13 @@ public abstract class SpecificVehicle extends Vehicles {
 
     public abstract TypeVehicle getType();
 
+    /**
+     * Return a short description of the vehicle.
+     */
+    public String toStringShort() {
+        return "Registration number : " + this.getId() + "\nModel : " + this.getManufacturer() + " " + this.getModel() + "\nMileage : " + this.getMileage() + " km";
+    }
+
     @Override
     public String toString() {
         return 
@@ -143,7 +150,7 @@ public abstract class SpecificVehicle extends Vehicles {
             "\nManufacturer : " + this.getManufacturer() +
             "\nModel : " + this.getModel() +
             "\nMileage : " + this.getMileage() + " km" +
-            "\nPurchasing price : " + this.getPurchasingPrice() + " €";
+            "\nPurchasing price : " + this.getPurchasingPrice() + " €\n";
     }
 
     /**

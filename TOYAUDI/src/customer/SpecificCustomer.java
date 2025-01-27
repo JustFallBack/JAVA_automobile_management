@@ -43,7 +43,7 @@ public abstract class SpecificCustomer extends Customers {
     }
     public String getRentalDate() {
         try {
-            return this.rentalDate.toString();
+            return this.rentalDate.getDate();
         } catch (NullPointerException e) {
             return "No rental date.";
         }
@@ -53,4 +53,5 @@ public abstract class SpecificCustomer extends Customers {
     }
 
     public abstract CustomerType getType();
+    public abstract String toStringShort();
 }

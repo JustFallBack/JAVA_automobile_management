@@ -43,12 +43,13 @@ public class RentingManagement extends Management {
 
         try {
             if (super.getRentAvailableVehicles().contains(vehicle)) {
-                DateManagement newRentalDate = new DateManagement(rentalDate);
+                DateManagement newRentalDate = new DateManagement(rentalDate); // check the validity of the date
                 addToCurrentlyRentedVehicles(customer, vehicle);
                 customer.setRentalDate(newRentalDate); 
                 if (customer instanceof PrivateCustomer) {
                     ((PrivateCustomer) customer).incrementNbRentals();
                 }
+                System.out.println("---------- Rental confirmed ----------\n" + vehicle.toStringShort() + "\n" + customer.toStringShort());
                 return true;
             }
             return false;
@@ -62,7 +63,7 @@ public class RentingManagement extends Management {
      * The end rental date and the end rental mileage are updated on the vehicle.
      * @param customer The customer ending the rental.
      * @param vehicle The vehicle rented by the customer.
-     * @param endRentalDate The date the rental ends.
+     * @param endRentalDate The date the rental ends. 
      * @param endRentalMileage The mileage of the vehicle when the rental ends.
      * @return True if the rental ends successfully, exception raised otherwise.
      * @throws AutomobileManagementVehiculesRentException
@@ -87,12 +88,7 @@ public class RentingManagement extends Management {
         // Remove the vehicle from the list of vehicles currently rented and add it to the list of vehicles available for rent and for sale.
         super.removeFromCurrentlyRentedVehicles(customer);
         super.addToRentAvailableVehicles(vehicle);
-        if (super.addToSaleAvailableVehicles(vehicle)) {
-            System.out.println("The vehicle is now available for sale :\n" + vehicle.toString());
-        } 
-        else {
-            System.out.println("The vehicle is not available for sale anymore :\n" + vehicle.toString());
-        }
+        super.addToSaleAvailableVehicles(vehicle);
 
         // Update the end rental date and the end rental mileage on the vehicule.
         try {
@@ -122,9 +118,10 @@ public class RentingManagement extends Management {
      * @throws AutomobileManagementVehiculesRentException
      */
     public void getReceipt(SpecificCustomer customer, SpecificVehicle vehicle) throws AutomobileManagementVehiculesRentException {
-        System.out.println("Receipt for the rental :\n" + customer.toString() + "\n" + vehicle.toString());
+        System.out.println("\n---------- Receipt for the rental -----\n");
+        System.out.println(customer.toStringShort() + "\n" + vehicle.toStringShort() + "\n");
         System.out.println("Rental period : from " + customer.getRentalDate() + " to " + vehicle.getEndRentalDate());
-        System.out.println("Distance traveled : " + (vehicle.getEndRentalMileage() - vehicle.getMileage()) + " km");
+        System.out.println("Distance traveled : " + checkMileage((vehicle.getEndRentalMileage() - vehicle.getMileage())) + " km");
         System.out.println("Total price of the rental : $" + super.getRentalPrice(customer, vehicle));
         vehicle.setNewMileage(vehicle.getEndRentalMileage());
     }
